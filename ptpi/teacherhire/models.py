@@ -2,11 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Subject(models.Model):
-    name = models.CharField(max_length=200)
-    desc = models.TextField()
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    marks = models.IntegerField()
+    status = models.BooleanField()
+    backlogs = models.CharField(max_length=400)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.title
     
 class Qualification(models.Model):
     highest_qualification = models.CharField(max_length=200, null=True, blank=True, choices=(("M.tech", "M.tech"),))
