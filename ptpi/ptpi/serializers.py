@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from ..teacherhire.models import Subject, Qualification, Teacher, Rating
+from teacherhire.models import Subject, Qualification, Teacher, Rating
+
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
