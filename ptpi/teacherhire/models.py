@@ -2,11 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Subject(models.Model):
-    name = models.CharField(max_length=200)
-    desc = models.TextField()
+    name = models.CharField(max_length=400, null=True, blank=True)
+    desc = models.TextField( null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.title
     
 class Qualification(models.Model):
     highest_qualification = models.CharField(max_length=200, null=True, blank=True, choices=( ("B.Tech", "B.Tech"),("M.Tech", "M.Tech"),("PhD", "PhD"),("BSc", "BSc"),("MSc", "MSc"),("BA", "BA"),("MA", "MA"),("MBA", "MBA"),("B.Ed", "B.Ed"),("M.Ed", "M.Ed")))
