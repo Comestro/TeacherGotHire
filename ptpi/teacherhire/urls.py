@@ -1,9 +1,14 @@
 from django.contrib import admin
 from django.urls import path,include
-from .views import home_page
+from teacherhire.views import SubjectViewSet
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'subjects',SubjectViewSet)
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("home/",home_page),
-    path("api/v1/",include('api.urls'))
+    path('',include(router.urls)),
+    
+
 ]

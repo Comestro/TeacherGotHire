@@ -1,9 +1,12 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from teacherhire.models import Subject
-from ptpi.serializers import SubjectSerializer
+from django.http import JsonResponse
 
-# Create your views here.
-class SubjectViewSet(viewsets.ModelViewSet):
-    queryset= Subject.objects.all()
-    serializer_class=SubjectSerializer
+def home_page(request):
+    print("home page requested")
+    friends=[
+        'Nidhi',
+        'Kumkum',
+        'Riya',
+        'puja',
+        'paras'
+    ]
+    return JsonResponse(friends,safe=False)
