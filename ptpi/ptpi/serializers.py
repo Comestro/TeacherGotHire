@@ -4,7 +4,7 @@ from ..teacherhire.models import Subject, Qualification, Teacher, Rating
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
-        fields = ['id','name','desc']
+        fields = "__all__"
     
 class QualificationSerializer(serializers.ModelSerializer):
     class Meta:
