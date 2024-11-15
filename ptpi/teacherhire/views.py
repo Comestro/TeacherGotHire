@@ -1,12 +1,10 @@
-from django.shortcuts import render
-from .models import Subject, Qualification, Teacher, Rating
-from ..ptpi.serializers import SubjectSerializer, QualificationSerializer, TeacherSerializer, RatingSerializer
-from rest_framework.renderers import JSONRenderer
-from django.http import HttpResponse
+from django.http import JsonResponse
 
-# Create your views here.
-def subjectsInfo(request):
-    sub = Subject.objects.all()
-    serializer = SubjectSerializer(sub)
-    json_data = JSONRenderer().render(serializer.data)
-    return HttpResponse(json_data, content_type='application/json')
+def home_page(request):
+    print("home page requested")
+    friends=[
+        'Nidhi',
+        'Kumkum',
+        'Riya'
+    ]
+    return JsonResponse(friends,safe=False)
