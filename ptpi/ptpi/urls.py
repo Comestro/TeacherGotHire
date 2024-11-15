@@ -4,5 +4,4 @@ from teacherhire import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('subject/info/', views.subjectsInfo ),
 ]
