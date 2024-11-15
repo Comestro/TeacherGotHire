@@ -3,10 +3,10 @@ from django.contrib.auth.models import User
 
 class Subject(models.Model):
     title = models.CharField(max_length=200)
-    description = models.TextField()
-    marks = models.IntegerField()
-    status = models.BooleanField()
-    backlogs = models.CharField(max_length=400)
+    description = models.TextField(null=True,blank=True)
+    marks = models.IntegerField(null=True,blank=True)
+    status = models.BooleanField(null=True,blank=True)
+    backlogs = models.CharField(max_length=400,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -39,3 +39,23 @@ class Rating(models.Model):
 
     def __str__(self):
         return self.rating
+    
+class Level(models.Model):
+    name=models.CharField(max_length=400,null=True,blank=True)
+    description= models.CharField(max_length=400,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self): 
+        return self.name
+    
+class Question(models.Model):
+    subject_id=models.IntegerField(null=True,blank=True)
+    question = models.CharField(max_length=200,null=True,blank=True)
+    answer = models.CharField(max_length=200,null=True,blank=True)
+    level= models.ForeignKey(Level, on_delete=models.CASCADE)
+    options = models.CharField(max_length=200,null=True,blank=True)
+
+    def __str__(self):
+        return self.subject_id
+

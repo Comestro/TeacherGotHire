@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Subject, Qualification, Teacher, Rating
-from .serializers import SubjectSerializer, QualificationSerializer, TeacherSerializer, RatingSerializer
+from ..ptpi.serializers import SubjectSerializer, QualificationSerializer, TeacherSerializer, RatingSerializer
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 
