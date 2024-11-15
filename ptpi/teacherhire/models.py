@@ -9,7 +9,7 @@ class Subject(models.Model):
         return self.name
     
 class Qualification(models.Model):
-    highest_qualification = models.CharField(max_length=200, null=True, blank=True, choices=(("M.tech", "M.tech"),))
+    highest_qualification = models.CharField(max_length=200, null=True, blank=True, choices=( ("B.Tech", "B.Tech"),("M.Tech", "M.Tech"),("PhD", "PhD"),("BSc", "BSc"),("MSc", "MSc"),("BA", "BA"),("MA", "MA"),("MBA", "MBA"),("B.Ed", "B.Ed"),("M.Ed", "M.Ed")))
     institution = models.CharField(max_length=200, null=True, blank=True)
     board = models.CharField(max_length=50, choices=(('BSEB', 'BSEB'), ('CBSE','CBSE'), ('ICSE', 'ICSE')))
 
