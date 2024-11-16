@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question,Register,Login
+from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,4 +44,9 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = Login
+        fields = "__all__"
+
+class AdminLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdminLogin 
         fields = "__all__"
