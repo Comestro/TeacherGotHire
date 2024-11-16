@@ -1,6 +1,7 @@
 import React from "react";
 import ProfileButton from "../Profile_Button/Profile_Button";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Navbar = ({ links, variant, externalComponent: ExternalComponent }) => {
 
