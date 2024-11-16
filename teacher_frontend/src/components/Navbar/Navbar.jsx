@@ -1,40 +1,37 @@
-
-
 import React from "react";
 import ProfileButton from "../Profile_Button/Profile_Button";
-
+import { Link } from "react-router-dom";
 
 const Navbar = ({ links, variant, externalComponent: ExternalComponent }) => {
   return (
     <>
-     <nav
-      className={` ${
-        variant === "light" ? "bg-white text-black" : "bg-teal-500 text-white"
-      }`}
-    >
-      <ul className="flex items-center justify-between px-56 py-1">
-         <div className="text-lg font-semibold">PTPI</div>
-         {links.map((link, index) => (
-          <li key={index}>
-            <a
-              href={link.href}
-              className=""
-            >
-              {link.label}
+      <nav
+        className={`flex items-center justify-between  py-2 px-10 ${
+          variant === "light" ? "bg-white text-black" : "bg-white-500 text-black"
+        }`}
+      >
+        <div className="text-3xl font-bold text-gray-950">
+            PTPI.COM
+        </div>
+        <div className="flex items-center justify-between">
+          {links.map((link, index) => (
+            <a href="#" key={index}>
+              <div className="flex gap-4">
+              <Link href={link.href} className="font-semibold text-gray-600 px-3 p-2">
+                {link.label}
+              </Link>
+              </div>
             </a>
-          </li>
-        ))}
-         {ExternalComponent && (
-          <div className="ml-4">
-            <ExternalComponent />
-          </div>
-        )} 
-
-      </ul>
-    </nav>
+          ))}
+          {ExternalComponent && (
+            <div className="ml-4">
+              <ExternalComponent />
+            </div>
+          )}
+        </div>
+      </nav>
     </>
-   
   );
 };
 
-export default Navbar
+export default Navbar;
