@@ -1,9 +1,15 @@
 import React from 'react'
+import { useState } from 'react';
 import Navbar from '../Navbar/Navbar'
 import { useNavigate } from 'react-router-dom';
 import ProfileButton from '../Profile_Button/Profile_Button';
 
 function TeacherDashboard() {
+  const [notifications, setNotifications] = useState([
+    // { message: 'New message received', type: 'info', read: false },
+    // { message: 'System update available', type: 'success', read: false },
+    // { message: 'Error in system', type: 'error', read: true }, // This one is read
+  ]);
 
     const navigate = useNavigate();
 
@@ -13,18 +19,19 @@ function TeacherDashboard() {
 
   return (
     <div>
-      <nav className='flex '>
-        <div>
+      <nav className=''>
+        <div className=''>
           <Navbar
               links={[
                   { label: "Contact US", href: "/contactus" },
                   { label: "AboutUs", href: "/about" },
                 ]}
                 variant="dark"
+                notifications={notifications}
+                externalComponent={ProfileButton}
               />
         </div>
-        <ProfileButton/>
-      </nav>
+       </nav>
          <div className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold text-blue-600 text-center mb-4">
         Become a Certified Tutor!

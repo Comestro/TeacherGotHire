@@ -12,6 +12,15 @@ def dashboard(request):
 
 def teacher(request):
     return render(request, "admin_panel/manage-teacher.html")
+
+def subject(request):
+    return render(request, "admin_panel/manage-subjects.html")
+
+def qualification(request):
+    return render(request, "admin_panel/manage-qualifications.html")
+
+def rating(request):
+    return render(request, "admin_panel/manage-rating.html")
   
 
 class SubjectViewSet(viewsets.ModelViewSet):
