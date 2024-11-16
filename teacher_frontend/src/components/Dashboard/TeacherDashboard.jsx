@@ -1,9 +1,15 @@
 import React from 'react'
+import { useState } from 'react';
 import Navbar from '../Navbar/Navbar'
 import { useNavigate } from 'react-router-dom';
 import ProfileButton from '../Profile_Button/Profile_Button';
 
 function TeacherDashboard() {
+  const [notifications, setNotifications] = useState([
+    // { message: 'New message received', type: 'info', read: false },
+    // { message: 'System update available', type: 'success', read: false },
+    // { message: 'Error in system', type: 'error', read: true }, // This one is read
+  ]);
 
     const navigate = useNavigate();
 
@@ -21,6 +27,7 @@ function TeacherDashboard() {
                   { label: "AboutUs", href: "/about" },
                 ]}
                 variant="dark"
+                notifications={notifications}
                 externalComponent={ProfileButton}
               />
         </div>
