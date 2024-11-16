@@ -28,8 +28,8 @@ function Home() {
       </nav>
       <div className="hero h-screen w-full flex items-center justify-center">
         <div className="flex flex-col w-[65%] text-gray-800 mb-10 ">
-          <p className="mb-8 font-bold text-6xl leading-none">
-            PTPI – Connect with top teachers and great teaching jobs.
+          <p className="mb-8 font-bold text-5xl leading-none">
+            <span className="font-bold text-6xl text-teal-600">PTPI</span> – Connect with top teachers and great teaching jobs.
           </p>
           <div className=" relative">
             <Input
