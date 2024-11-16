@@ -7,19 +7,11 @@ from django.utils.timezone import now
 class Subject(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-<<<<<<< HEAD
-    marks = models.IntegerField()
-    status = models.BooleanField()
-    backlogs = models.CharField(max_length=400)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-=======
     marks = models.IntegerField(default=0)
     status = models.BooleanField(default=True)  # Default set for status
     backlogs = models.CharField(max_length=400, default="No Backlogs")  # Default for backlogs
     created_at = models.DateTimeField(default=now)  # Ensures valid datetime default
     updated_at = models.DateTimeField(auto_now=True)  # Automatically updated
->>>>>>> 185e3b4c3b373a83735189606b8759551bc32b1c
 
     def __str__(self):
         return self.title
@@ -69,8 +61,4 @@ class Rating(models.Model):
     comment = models.CharField(max_length=400, null=True, blank=True)
 
     def __str__(self):
-<<<<<<< HEAD
-        return self.rating
-=======
         return f"Rating: {self.rating or 'N/A'}"
->>>>>>> 185e3b4c3b373a83735189606b8759551bc32b1c
