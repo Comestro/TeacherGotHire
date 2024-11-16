@@ -11,9 +11,6 @@ router.register(r'ratings',RatingViewSet)
 router.register(r'levels',LevelViewSet)
 router.register(r'questions',QuestionViewSet)
 
-
 urlpatterns = [
     path('',include(router.urls)),
-    
-
 ]

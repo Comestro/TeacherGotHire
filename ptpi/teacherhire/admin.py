@@ -7,7 +7,7 @@ class SubjectAdmin(admin.ModelAdmin):
     list_display = ['title', 'description', 'marks', 'status', 'backlogs', 'created_at', 'updated_at']
 
 @admin.register(Qualification)
-class QualificationAdmin(admin.ModelAdmin):  
+class QualificationAdmin(admin.ModelAdmin):
     list_display = ['id', 'highest_qualification', 'institution', 'board']
 
 @admin.register(Teacher)
