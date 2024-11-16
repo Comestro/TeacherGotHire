@@ -28,7 +28,7 @@ function Home() {
         />
       </nav>
       <div className="hero h-screen w-full flex items-center justify-center">
-        <div className="flex flex-col w-[65%] text-gray-950 mb-7 ">
+        <div className="flex flex-col w-[65%] text-gray-800 mb-10 ">
           <p className="mb-8 font-bold text-6xl leading-none">
             PTPI – Connect with top teachers and great teaching jobs.
           </p>
@@ -60,35 +60,35 @@ function Home() {
             </Button>
             <Button
               textColor="text-teal-700"
-              bgcolor="bg-teal-200"
+              bgcolor="bg-teal-100"
               className="rounded-2xl"
             >
               English
             </Button>
             <Button
               textColor="text-teal-700"
-              bgcolor="bg-teal-200"
+              bgcolor="bg-teal-100"
               className="rounded-2xl"
             >
               English
             </Button>
             <Button
               textColor="text-teal-700"
-              bgcolor="bg-teal-200"
+              bgcolor="bg-teal-100"
               className="rounded-2xl"
             >
               English
             </Button>
             <Button
               textColor="text-teal-700"
-              bgcolor="bg-teal-200"
+              bgcolor="bg-teal-100"
               className="rounded-2xl"
             >
               English
             </Button>
             <Button
               textColor="text-teal-700"
-              bgcolor="bg-teal-200"
+              bgcolor="bg-teal-100"
               className="rounded-2xl"
             >
               English
