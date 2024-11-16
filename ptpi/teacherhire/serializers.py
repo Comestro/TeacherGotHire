@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Subject, Qualification, Teacher, Rating
+from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,7 +11,6 @@ class QualificationSerializer(serializers.ModelSerializer):
         model = Qualification
         fields = "__all__"
 
-# Create your serializers here.
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
@@ -19,10 +18,20 @@ class TeacherSerializer(serializers.ModelSerializer):
         qualification = serializers.CharField(source='qualification.highest_qualification')
         subject = serializers.CharField(source='subject.name')
 
-        fields = ['user_name','bio', 'experience_year', 'qualification', 'subject']
+        fields = "__all__"
 
 class RatingSerializer(serializers.ModelSerializer):
+     class Meta:
+         model = Rating
+         teacher = serializers.CharField(source='teacher.user.name')
+         fields = ['teacher', 'rating', 'comment']
+
+class LevelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Rating
-        teacher = serializers.CharField(source='teacher.user.name')
-        fields = ['teacher', 'rating', 'comment']
+        model = Level
+        fields = "__all__"
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = "__all__"

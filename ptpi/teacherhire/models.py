@@ -50,7 +50,6 @@ class Teacher(models.Model):
     def __str__(self):
         return self.user.username if self.user else "Unknown Teacher"
 
-
 class Rating(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True)
     rating = models.IntegerField(
@@ -62,3 +61,39 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"Rating: {self.rating or 'N/A'}"
+
+class Level(models.Model):
+    name=models.CharField(max_length=400,null=True,blank=True)
+    description= models.CharField(max_length=400,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self): 
+        return self.name
+    
+class Question(models.Model):
+    subject_id = models.IntegerField(null=True,blank=True)
+    question = models.CharField(max_length=200,null=True,blank=True)
+    answer = models.CharField(max_length=200,null=True,blank=True)
+    level= models.ForeignKey(Level, on_delete=models.CASCADE)
+    options = models.CharField(max_length=200,null=True,blank=True)
+
+    def __str__(self):
+        return self.subject_id
+    
+class Register(models.Model):
+    Fname = models.CharField(max_length=500)
+    Lname = models.CharField(max_length=500)
+    email = models.EmailField(max_length=254)
+    password = models.CharField(max_length=200)
+    contact = models.IntegerField()
+    
+    def __str__(self):
+        return f"{self.Fname} {self.Lname}"
+    
+class Login(models.Model):
+    email = models.EmailField()
+    password = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.email
