@@ -6,6 +6,12 @@ from teacherhire.serializers import SubjectSerializer,QualificationSerializer,Te
 # Create your views here.
 def home(request):
   return render(request,"home.html")
+
+def dashboard(request):
+    return render(request, "admin_panel/dashboard.html")
+
+def teacher(request):
+    return render(request, "admin_panel/manage-teacher.html")
   
 
 class SubjectViewSet(viewsets.ModelViewSet):

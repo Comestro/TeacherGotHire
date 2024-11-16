@@ -7,10 +7,10 @@ class Subject(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     marks = models.IntegerField(default=0)
-    status = models.BooleanField(default=True)  # Default set for status
-    backlogs = models.CharField(max_length=400, default="No Backlogs")  # Default for backlogs
-    created_at = models.DateTimeField(default=now)  # Ensures valid datetime default
-    updated_at = models.DateTimeField(auto_now=True)  # Automatically updated
+    status = models.BooleanField(default=True)  
+    backlogs = models.CharField(max_length=400, default="No Backlogs")  
+    created_at = models.DateTimeField(default=now)  
+    updated_at = models.DateTimeField(auto_now=True)  
 
     def __str__(self):
         return self.title
