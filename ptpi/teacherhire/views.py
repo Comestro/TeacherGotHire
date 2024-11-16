@@ -4,6 +4,10 @@ from teacherhire.models import Subject , Qualification,Teacher,Rating,Level,Ques
 from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer,LevelSerializer,QuestionSerializer
 
 # Create your views here.
+def home(request):
+  return render(request,"home.html")
+  
+
 class SubjectViewSet(viewsets.ModelViewSet):
     queryset= Subject.objects.all()
     serializer_class=SubjectSerializer
