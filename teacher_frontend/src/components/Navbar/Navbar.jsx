@@ -1,7 +1,8 @@
 import React from "react";
-import ProfileButton from "../Profile_Button/Profile_Button";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import Button from "../Button";
+import { IoIosNotifications } from "react-icons/io";
 
 const Navbar = ({ links, variant, externalComponent: ExternalComponent }) => {
 
@@ -30,6 +31,9 @@ const Navbar = ({ links, variant, externalComponent: ExternalComponent }) => {
               </div>
             </a>
           ))}
+          <Button>
+          <IoIosNotifications />
+          </Button>
           {ExternalComponent && (
             <div className="ml-4">
               <ExternalComponent />
