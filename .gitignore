@@ -1,1 +1,4 @@
 /server
+**/__pycache__/
+ptpi/db.sqlite3
+ptpi/ptpi/__pycache__

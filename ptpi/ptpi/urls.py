@@ -1,8 +1,9 @@
 from django.contrib import admin
-from django.urls import path
-from teacherhire.views import*
+from django.urls import path,include
+from ptpi.views import home_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("",home,name="homepage"),
+    path("home/",home_page),
+    path("api/",include('teacherhire.urls'))
 ]
