@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.timezone import now
 
-
 class Subject(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
@@ -15,7 +14,6 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.title
-
 
 class Qualification(models.Model):
     highest_qualification = models.CharField(
