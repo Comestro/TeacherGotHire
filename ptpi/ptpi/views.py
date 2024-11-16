@@ -9,4 +9,4 @@ def home_page(request):
         'puja',
         'paras'
     ]
-    return JsonResponse(friends,safe=False)
+    return JsonResponse(home_page)

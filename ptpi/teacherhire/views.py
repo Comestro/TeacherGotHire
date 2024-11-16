@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from teacherhire.models import Subject , Qualification,Teacher,Rating,Level,Question
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer,LevelSerializer,QuestionSerializer
+from teacherhire.models import Subject , Qualification,Teacher,Rating,Level,Question,Register,Login
+from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer,LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer
 
 # Create your views here.
 def home(request):
@@ -32,3 +32,11 @@ class LevelViewSet(viewsets.ModelViewSet):
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset= Question.objects.all()
     serializer_class=QuestionSerializer
+
+class RegisterViewSet(viewsets.ModelViewSet):
+    queryset= Register.objects.all()
+    serializer_class=RegisterSerializer
+
+class LoginViewSet(viewsets.ModelViewSet):
+    queryset= Login.objects.all()
+    serializer_class=LoginSerializer
