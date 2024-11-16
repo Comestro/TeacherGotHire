@@ -4,7 +4,7 @@ import React from "react";
 import ProfileButton from "../Profile_Button/Profile_Button";
 
 
-const Navbar = ({ links, variant }) => {
+const Navbar = ({ links, variant, externalComponent: ExternalComponent }) => {
   return (
     <>
      <nav
@@ -24,7 +24,11 @@ const Navbar = ({ links, variant }) => {
             </a>
           </li>
         ))}
-         
+         {ExternalComponent && (
+          <div className="ml-4">
+            <ExternalComponent />
+          </div>
+        )} 
 
       </ul>
     </nav>

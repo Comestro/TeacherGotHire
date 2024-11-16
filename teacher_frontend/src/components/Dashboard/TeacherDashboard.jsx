@@ -13,18 +13,18 @@ function TeacherDashboard() {
 
   return (
     <div>
-      <nav className='flex '>
-        <div>
+      <nav className=''>
+        <div className=''>
           <Navbar
               links={[
                   { label: "Contact US", href: "/contactus" },
                   { label: "AboutUs", href: "/about" },
                 ]}
                 variant="dark"
+                externalComponent={ProfileButton}
               />
         </div>
-        <ProfileButton/>
-      </nav>
+       </nav>
          <div className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold text-blue-600 text-center mb-4">
         Become a Certified Tutor!
