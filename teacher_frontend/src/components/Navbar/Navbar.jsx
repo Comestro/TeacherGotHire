@@ -30,6 +30,7 @@ const Navbar = ({ links, variant, externalComponent: ExternalComponent }) => {
             >
               {link.label}
             </a>
+            
           </li>
         ))}
          <div className="relative">
