@@ -6,11 +6,6 @@ import { IoIosNotifications } from "react-icons/io";
 
 const Navbar = ({ links, variant, externalComponent: ExternalComponent }) => {
 
-  const [showNotifications, setShowNotifications] = useState(false);
-  
-  const handleNotificationClick = () => {
-    setShowNotifications(!showNotifications);
-  };
   return (
     <>
       <nav
@@ -22,7 +17,7 @@ const Navbar = ({ links, variant, externalComponent: ExternalComponent }) => {
             PTPI.COM
         </div>
         <div className="flex items-center justify-between">
-          {links.map((link, index) => (
+          {/* {links.map((link, index) => (
             <a href="#" key={index}>
               <div className="flex gap-4">
               <Link href={link.href} className="font-semibold text-gray-600 px-3 p-2">
@@ -30,8 +25,18 @@ const Navbar = ({ links, variant, externalComponent: ExternalComponent }) => {
               </Link>
               </div>
             </a>
-          ))}
+          ))} */}
+           {links.map((link) => (
+              <Link 
+                key={link.id} 
+                to={link.to} 
+                className=" items-center gap-4 p-3 rounded-md hover:bg-gray-100 transition font-semibold text-gray-700"
+              >
+                {link.label}
+              </Link>
+            ))}
           <Button>
+
           <IoIosNotifications />
           </Button>
           {ExternalComponent && (

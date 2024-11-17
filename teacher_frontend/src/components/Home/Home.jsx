@@ -19,9 +19,9 @@ function Home() {
       <nav>
         <Navbar
           links={[
-            { label: "SignIn", href: "/login" },
-            { label: "Contact US", href: "/contactus" },
-            { label: "AboutUs", href: "/about" },
+            {id:'1', label: "SignIn", to: "/login" },
+            {id:'2', label: "Contact US", to: "/contact" },
+            {id:"3", label: "AboutUs", to: "/about" },
           ]}
           variant="dark"
         />
