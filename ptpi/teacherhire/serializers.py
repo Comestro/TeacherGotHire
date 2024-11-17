@@ -1,6 +1,21 @@
 from rest_framework import serializers
 from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question,Register,Login, AdminLogin
 from django.contrib.auth.models import User
+from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin
+from  django.contrib.auth.models import User
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username','password']
+
+    def create(self, validated_data):
+        user = User.objects.create(username = validated_data['username'])
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
