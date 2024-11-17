@@ -1,5 +1,21 @@
 from rest_framework import serializers
+from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question,Register,Login, AdminLogin
+from django.contrib.auth.models import User
 from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin
+from  django.contrib.auth.models import User
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username','password']
+
+    def create(self, validated_data):
+        user = User.objects.create(username = validated_data['username'])
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,20 +27,35 @@ class QualificationSerializer(serializers.ModelSerializer):
         model = Qualification
         fields = "__all__"
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
+
 class TeacherSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        queryset=User.objects.all(),
+        slug_field = 'username'
+    )  
+    qualification = serializers.SlugRelatedField(
+        queryset=Qualification.objects.all(),
+        slug_field='highest_qualification'  # Display 'highest_qualification' in dropdown
+    )
+    subject = serializers.SlugRelatedField(
+        queryset=Subject.objects.all(),
+        slug_field='title'  # Display 'title' in dropdown
+    )
     class Meta:
         model = Teacher
-        user_name = serializers.CharField(source='user.name')
-        qualification = serializers.CharField(source='qualification.highest_qualification')
-        subject = serializers.CharField(source='subject.name')
+        fields = ['id', 'user', 'bio', 'experience_year', 'qualification', 'subject']
 
-        fields = "__all__"
 
 class RatingSerializer(serializers.ModelSerializer):
-     class Meta:
-         model = Rating
-         teacher = serializers.CharField(source='teacher.user.name')
-         fields = ['teacher', 'rating', 'comment']
+    teacher = TeacherSerializer()  # Nested serializer to show teacher details
+
+    class Meta:
+        model = Rating
+        fields = ['id', 'teacher', 'rating', 'comment']
 
 class LevelSerializer(serializers.ModelSerializer):
     class Meta:
