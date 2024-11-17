@@ -14,7 +14,7 @@
             {% for rating in response  %}
             <tr class="text-gray-700">
                 <td class="px-2 py-1 text-center">{{rating.id}}</td>
-                <td class="px-2 py-1 text-center">{{rating.teacher}}</td>
+                <td class="px-2 py-1 text-center">{{rating.teacher.user}}</td>
                 <td class="px-2 py-1 text-center">{{rating.rating}}</td>
                 <td class="px-2 py-1 text-center">{{rating.comment}}</td>
                 

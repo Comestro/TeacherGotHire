@@ -18,6 +18,4 @@ urlpatterns = [
     path("home/",home),
     path("api/",include('teacherhire.urls'))
 
-    # api url
-    path("api/",include('teacherhire.urls')),
 ]

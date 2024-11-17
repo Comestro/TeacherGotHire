@@ -35,8 +35,6 @@ def manage_qualification(request):
     response =requests.get("http://127.0.0.1:8000/api/qualifications/").json()
     return render(request, "admin_panel/manage-qualifications.html",{'response':response})
 
-def rating(request):
-    return render(request, "admin_panel/manage-rating.html")
 
 class RegisterUser(APIView):
     def post(self,request):
@@ -65,7 +63,6 @@ class SubjectViewSet(viewsets.ModelViewSet):
 
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-
 
     queryset= Subject.objects.all()
     serializer_class=SubjectSerializer
