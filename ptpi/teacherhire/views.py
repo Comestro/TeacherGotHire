@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets
 from teacherhire.models import Subject , Qualification,Teacher,Rating,Level,Question,Register,Login
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer,LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer
-from .models import Teacher
+from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer,LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer, AdminLoginSerializer
+from .models import Teacher, AdminLogin
 import requests
 from rest_framework.decorators import api_view
 
@@ -69,3 +69,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
 class LoginViewSet(viewsets.ModelViewSet):
     queryset= Login.objects.all()
     serializer_class=LoginSerializer
+
+class AdminLoginViewSet(viewsets.ModelViewSet):
+    queryset= AdminLogin.objects.all()
+    serializer_class=AdminLoginSerializer
