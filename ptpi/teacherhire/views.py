@@ -1,7 +1,14 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from teacherhire.models import Subject , Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer,LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer
+from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer,\
+    LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer,UserSerializer
+from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from .models import *
 
 # Create your views here.
 def home(request):
@@ -21,9 +28,25 @@ def qualification(request):
 
 def rating(request):
     return render(request, "admin_panel/manage-rating.html")
-  
+
+class RegisterUser(APIView):
+    def post(self,request):
+        serializer= UserSerializer(data = request.data)
+
+        if not serializer.is_valid():
+            return Response({'status':403,'errors': serializer.errors,'message':'Something went wrong '})
+        serializer.save()
+        user = User.objects.get(username = serializer.data['username'])
+        token_obj, __ =Token.objects.get_or_create(user=user)
+        return Response({'status':200,'payload':serializer.data, 'token':str(token_obj) ,'message':'your data is save'})
+
 
 class SubjectViewSet(viewsets.ModelViewSet):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
     queryset= Subject.objects.all()
     serializer_class=SubjectSerializer
 
