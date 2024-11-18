@@ -26,7 +26,7 @@ function TeacherDashboard() {
           <Navbar
               links={[
                   {id:'1', label: "Contact US", to: "/contact" },
-                  {id:"2", label: "AboutUs", href: "/about" },
+                  {id:"2", label: "AboutUs", to: "/about" },
                 ]}
                 variant="dark"
                 // notifications={notifications}
