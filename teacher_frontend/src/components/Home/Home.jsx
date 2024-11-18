@@ -50,7 +50,7 @@ function Home() {
         <IoLocationOutline className="text-gray-600 hidden sm:block" />
         <input
           type="text"
-          placeholder="Zip code"
+          placeholder="Pin code"
           className="hidden sm:block w-20 md:w-28 p-3 border-none focus:outline-none text-gray-600 placeholder-gray-400"
         />
         <button className="bg-teal-700 hover:bg-blue-500 p-2 rounded-full flex items-center justify-center">
