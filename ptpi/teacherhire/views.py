@@ -1,8 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets
 from teacherhire.models import Subject , Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer,\
-    LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer,UserSerializer
+from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer,UserSerializer
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -14,7 +13,6 @@ from teacherhire.serializers import SubjectSerializer,QualificationSerializer,Te
 from .models import Teacher, AdminLogin
 import requests
 from rest_framework.decorators import api_view
-
 
 # Create your views here.
 def home(request):
@@ -53,20 +51,15 @@ def manage_rating(request):
     response=requests.get('http://127.0.0.1:8000/api/ratings/').json()
     return render(request, "admin_panel/manage-rating.html",{'response':response})
 
-
 @api_view(['DELETE'])
 def delete_rating(req, pk):
     rating = get_object_or_404(Rating, pk=pk)
     rating.delete()
     redirect(manage_rating)
   
-
 class SubjectViewSet(viewsets.ModelViewSet):
-
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
     queryset= Subject.objects.all()
     serializer_class=SubjectSerializer
 

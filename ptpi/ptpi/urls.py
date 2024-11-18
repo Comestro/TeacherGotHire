@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include
-from teacherhire.views import home, dashboard, teacher, subject, qualification, rating
 from rest_framework.authtoken import views
 from teacherhire.views import home, dashboard, manage_teacher, manage_subject, manage_qualification, manage_rating,delete_rating
 
@@ -18,6 +17,5 @@ urlpatterns = [
     path("home/",home),
     path("api/",include('teacherhire.urls'))
 
-    # api url
-    path("api/",include('teacherhire.urls')),
+    
 ]

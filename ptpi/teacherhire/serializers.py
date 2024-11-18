@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
-        fields = "__all__"
+        fields = ['id', 'title', 'description', 'marks', 'status', 'backlogs', 'created_at', 'updated_at']
     
 class QualificationSerializer(serializers.ModelSerializer):
     class Meta:
