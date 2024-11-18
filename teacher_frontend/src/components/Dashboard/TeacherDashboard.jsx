@@ -1,15 +1,17 @@
 import React from 'react'
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Navbar from '../Navbar/Navbar'
 import { useNavigate } from 'react-router-dom';
 import ProfileButton from '../Profile_Button/Profile_Button';
+import Button from '../Button';
 
 function TeacherDashboard() {
-  const [notifications, setNotifications] = useState([
-    // { message: 'New message received', type: 'info', read: false },
-    // { message: 'System update available', type: 'success', read: false },
-    // { message: 'Error in system', type: 'error', read: true }, // This one is read
-  ]);
+  const profile = useSelector((state) => state.profile);
+  // const calculateCompletion = () => {
+  //   const fields = ["name", "email", "password", "phone", "address", "bio"];
+  //   const filledFields = fields.filter((field) => profile[field]);
+  //   return Math.round((filledFields.length / fields.length) * 100);
+  // };
 
     const navigate = useNavigate();
 
@@ -23,40 +25,79 @@ function TeacherDashboard() {
         <div className=''>
           <Navbar
               links={[
-                  { label: "Contact US", href: "/contactus" },
-                  { label: "AboutUs", href: "/about" },
+                  {id:'1', label: "Contact US", to: "/contact" },
+                  {id:"2", label: "AboutUs", href: "/about" },
                 ]}
                 variant="dark"
-                notifications={notifications}
+                // notifications={notifications}
                 externalComponent={ProfileButton}
               />
         </div>
        </nav>
-         <div className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-blue-600 text-center mb-4">
-        Become a Certified Tutor!
-      </h1>
-      <p className="text-lg text-gray-700 mb-4">
-        Join our network of professional tutors by completing a simple exam. Here's how the process works:
-      </p>
-      <ul className="list-disc pl-5 text-gray-600 mb-6">
-        <li className="mb-2">Pay a minimal registration fee to enroll for the exam.</li>
-        <li className="mb-2">Take the exam to demonstrate your teaching skills.</li>
-        <li>Start your journey as a certified tutor with us!</li>
-      </ul>
-      <p className="text-lg font-medium text-gray-800 mb-6">
-        Registration Fee: <span className="text-green-600 font-bold">₹500</span>
-      </p>
-      <div className="text-center">
-        <button
-          onClick={handleExamStart}
-          className="px-6 py-3 bg-blue-500 text-white font-bold rounded-lg shadow hover:bg-blue-600 transition"
-        >
-          Proceed to Exam
-        </button>
-      </div>
-    </div>  
-    </div>
+       <div className='flex w-full justify-center items-center mt-10 gap-8'>
+       <aside className=''>
+       <div className="w-64 p-6 bg-gray-100 h-screen">
+                {/* Profile Image and Completion */}
+                {/* Data will show through Api */}
+                <div className="relative w-full mb-6">
+                  <img
+                    src={profile.image || "https://via.placeholder.com/150"}
+                    alt="Profile"
+                    className="w-24 h-24 rounded-full mx-auto object-cover border-2 border-gray-300"
+                  />
+                  <div
+                    className="absolute top-1/2 right-8 text-sm text-white font-bold bg-blue-500 rounded-full px-2 py-1"
+                    style={{ transform: "translateY(-50%)" }}
+                  >
+                    {profile.completion}%
+                  </div>
+                </div>
+
+                {/* Name and Email */}
+                <div className="text-center mb-6">
+                  <h2 className="font-bold text-lg">{profile.name || "Your Name"}</h2>
+                  <p className="text-sm text-gray-500">{profile.email || "your-email@example.com"}</p>
+                </div>
+
+                {/* View Profile Button */}
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="block w-full bg-blue-500 text-white py-2 rounded-md text-center hover:bg-blue-600 transition"
+                >
+                  View Profile
+                </button>
+              </div> 
+       </aside>
+       <section className=''>
+            <div className="max-w-2xl mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
+            <h1 className="text-3xl font-bold text-blue-600 text-center mb-4">
+              Become a Certified Tutor!
+            </h1>
+            <p className="text-lg text-gray-700 mb-4">
+              Join our network of professional tutors by completing a simple exam. Here's how the process works:
+            </p>
+            <ul className="list-disc pl-5 text-gray-600 mb-6">
+              <li className="mb-2">Pay a minimal registration fee to enroll for the exam.</li>
+              <li className="mb-2">Take the exam to demonstrate your teaching skills.</li>
+              <li>Start your journey as a certified tutor with us!</li>
+            </ul>
+            <p className="text-lg font-medium text-gray-800 mb-6">
+              Registration Fee: <span className="text-green-600 font-bold">₹500</span>
+            </p>
+            <div className="text-center">
+              <button
+                onClick={handleExamStart}
+                className="px-6 py-3 bg-blue-500 text-white font-bold rounded-lg shadow hover:bg-blue-600 transition"
+              >
+                Proceed to Exam
+              </button>
+            </div>
+          </div>  
+                   
+            </section>
+       </div>
+   </div>
+    
   )
 }
 

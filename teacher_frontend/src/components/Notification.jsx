@@ -15,7 +15,6 @@ if(!isVisible) return null;
           className="ml-3 text-xl font-semibold text-white hover:text-gray-200"
           onClick={() => setIsVisible(false)}
         >
-          &times;
         </button>
       </div>
     )
