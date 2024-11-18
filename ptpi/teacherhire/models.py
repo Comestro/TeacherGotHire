@@ -13,8 +13,18 @@ class Subject(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  
     def __str__(self):
         return self.title
+    
+class Skill(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    skill_name = models.CharField(max_length=400, null=True, blank=True)
+
+    def __str__(self):
+        return self.skill_name
 
 class Qualification(models.Model):
+    # userid, skill(teacherid, , skillname), 
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    skill_name = models.ForeignKey(Skill, on_delete=models.CASCADE, null=True, blank=True)
     highest_qualification = models.CharField(
         max_length=200,
         null=True,
@@ -57,6 +67,8 @@ class Rating(models.Model):
         return f"Rating: {self.rating or 'N/A'}"
 
 class Level(models.Model):
+    # subjectid
+    subject_id = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True)
     name=models.CharField(max_length=400,null=True,blank=True)
     description= models.CharField(max_length=400,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
