@@ -23,17 +23,58 @@ def home(request):
 def dashboard(request):
     return render(request, "admin_panel/dashboard.html")
 
+#teacher
 def manage_teacher(request):
     response = requests.get("http://127.0.0.1:8000/api/teachers/").json()
     return render(request, "admin_panel/manage-teacher.html", {'response':response})
 
+@api_view(['DELETE'])
+def delete_teacher(request, pk):
+    teacher = get_object_or_404(Teacher, pk=pk)
+    teacher.delete()
+    #return redirect('manage_teacher')
+    return render(request, "admin_panel/manage-teacher.html")
+
+
+#Subject
 def manage_subject(request):
     response=requests.get("http://127.0.0.1:8000/api/subjects/").json()
     return render(request, "admin_panel/manage-subjects.html",{'response':response})
 
+@api_view(['DELETE'])
+def delete_subject(request, pk):
+    subject = get_object_or_404(Subject, pk=pk)
+    subject.delete()
+    return render(request, "admin_panel/manage-subjects.html")
+
+#Qualification
 def manage_qualification(request):
     response =requests.get("http://127.0.0.1:8000/api/qualifications/").json()
     return render(request, "admin_panel/manage-qualifications.html",{'response':response})
+
+@api_view(['DELETE'])
+def delete_quali(request, pk):
+    qualification = get_object_or_404(Qualification, pk=pk)
+    qualification.delete()
+    return render(request, "admin_panel/manage-qualifications.html")
+    #return Response({"message": "Qualification deleted successfully"}, status=204)
+
+
+#rating
+def manage_rating(request):
+    response=requests.get('http://127.0.0.1:8000/api/ratings/').json()
+    return render(request, "admin_panel/manage-rating.html",{'response':response})
+
+
+@api_view(['DELETE'])
+def delete_rating(request, pk):
+    rating = get_object_or_404(Rating, pk=pk)
+    rating.delete()
+    #return redirect('manage_rating')
+    #redirect(manage_rating)
+    return render(request, "admin_panel/manage-rating.html")
+
+  
 
 
 class RegisterUser(APIView):
@@ -47,17 +88,6 @@ class RegisterUser(APIView):
         token_obj, __ =Token.objects.get_or_create(user=user)
         return Response({'status':200,'payload':serializer.data, 'token':str(token_obj) ,'message':'your data is save'})
 
-def manage_rating(request):
-    response=requests.get('http://127.0.0.1:8000/api/ratings/').json()
-    return render(request, "admin_panel/manage-rating.html",{'response':response})
-
-
-@api_view(['DELETE'])
-def delete_rating(req, pk):
-    rating = get_object_or_404(Rating, pk=pk)
-    rating.delete()
-    redirect(manage_rating)
-  
 
 class SubjectViewSet(viewsets.ModelViewSet):
 
