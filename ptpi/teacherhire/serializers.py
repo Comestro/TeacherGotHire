@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
-        fields = "__all__"
+        fields = ['id', 'title', 'description', 'marks', 'status', 'backlogs', 'created_at', 'updated_at']
     
 class QualificationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,18 +33,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email']
 
 class TeacherSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(
-        queryset=User.objects.all(),
-        slug_field = 'username'
-    )  
-    qualification = serializers.SlugRelatedField(
-        queryset=Qualification.objects.all(),
-        slug_field='highest_qualification'  # Display 'highest_qualification' in dropdown
-    )
-    subject = serializers.SlugRelatedField(
-        queryset=Subject.objects.all(),
-        slug_field='title'  # Display 'title' in dropdown
-    )
+    user = UserSerializer() 
+    qualification = QualificationSerializer()
+    subject = SubjectSerializer()
     class Meta:
         model = Teacher
         fields = ['id', 'user', 'bio', 'experience_year', 'qualification', 'subject']
