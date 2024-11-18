@@ -18,7 +18,7 @@ function SignUpPage() {
         if(role==='teacher'){
           navigate('/teacherdashbord')
         }else{
-          navigate('/Parentdashboard')
+          navigate('/schooladmindashboard')
         }
       };
     

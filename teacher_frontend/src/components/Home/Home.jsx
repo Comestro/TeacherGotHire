@@ -6,7 +6,6 @@ import { IoSearchOutline } from "react-icons/io5";
 import Footer from "../Footer/Footer";
 import RoleSelection from "../RoleSelection";
 import { useNavigate } from "react-router-dom";
-import { IoLocationOutline } from "react-icons/io5";
 
 function Home() {
   const navigate = useNavigate();
@@ -88,75 +87,6 @@ function Home() {
       <RoleSelection onSelectRole={handleRoleSelection} />
       <Footer />
     </div>
-    <div className="flex flex-col gap-2 w-full lg:w-[65%] px-14">
-      <div className="flex items-center rounded-full border-2 p-2 bg-white mr-4">
-        <input
-          type="text"
-          placeholder="What subject do you need help with?"
-          className="flex-1 p-2 px-2 border-none focus:outline-none text-gray-600  placeholder-gray-400 placeholder:font-semibold placeholder:px-4"
-        />
-        <div className="h-6 w-px bg-gray-300 mx-4 hidden sm:block"></div>
-        <IoLocationOutline className="text-gray-600 hidden sm:block" />
-        <input
-          type="text"
-          placeholder="Pin code"
-          className="hidden sm:block w-20 md:w-28 p-3 border-none focus:outline-none text-gray-600 placeholder-gray-400"
-        />
-        <button className="bg-teal-700 hover:bg-blue-500 p-2 rounded-full flex items-center justify-center">
-          <IoSearchOutline className="text-white w-5 h-5 md:w-7 md:h-7 p-1" />
-        </button>
-      </div>
-
-      <div className="mt-4 flex flex-nowrap gap-4 justify-center">
-        <Button
-          textColor="text-teal-700 font-medium"
-          bgcolor="bg-teal-100"
-          className="rounded-full"
-        >
-          Math
-        </Button>
-        <Button
-          textColor="text-teal-700 font-medium"
-          bgcolor="bg-teal-100"
-          className="rounded-2xl"
-        >
-          English
-        </Button>
-        <Button
-          textColor="text-teal-700 font-medium"
-          bgcolor="bg-teal-100"
-          className="rounded-2xl"
-        >
-          Science
-        </Button>
-        <Button
-          textColor="text-teal-700 font-medium"
-          bgcolor="bg-teal-100"
-          className="rounded-2xl"
-        >
-          History
-        </Button>
-        <Button
-          textColor="text-teal-700 font-medium"
-          bgcolor="bg-teal-100"
-          className="rounded-2xl"
-        >
-          Geography
-        </Button>
-        <Button
-          textColor="text-teal-700 font-medium"
-          bgcolor="bg-teal-100"
-          className="rounded-2xl"
-        >
-          Music
-        </Button>
-      </div>
-    </div>
-  </div>
-  <RoleSelection onSelectRole={handleRoleSelection} />
-  <Footer />
-</div>
-
   );
 }
 

@@ -10,6 +10,7 @@ import Payment from "./components/Payment"
 import ExamPortal from "./components/ExamPortal/ExamPortal"
 import ContactUs from "./components/ContactUs/ContactUs"
 import Profile from "./components/ProfileEdit/ProfileEdit";
+import SchoolAdmin from "./components/Dashboard/SchoolAdmin";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                   <Route path="/signup/:role" element={<SignUpPage />} />
                   <Route path="/signin" element={<SignUpPage/>}/>
                   <Route path="/teacherdashbord" element={<TeacherDashboard/>}/>
+                  <Route path="/schooladmindashboard" element={<SchoolAdmin/>}/>
                   <Route path="/payment" element={<Payment/>}/>
                   <Route path="/exam-portal" element={<ExamPortal/>}/>
                   <Route path="/contact" element={<ContactUs/>}/>
