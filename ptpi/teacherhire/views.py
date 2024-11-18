@@ -103,22 +103,37 @@ class SubjectViewSet(viewsets.ModelViewSet):
     serializer_class=SubjectSerializer
 
 class QualificationViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset= Qualification.objects.all()
     serializer_class=QualificationSerializer
 
 class TeacherViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
 
 class RatingViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset= Rating.objects.all()
     serializer_class=RatingSerializer
 
 class LevelViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset= Level.objects.all()
     serializer_class=LevelSerializer
 
 class QuestionViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     queryset= Question.objects.all()
     serializer_class=QuestionSerializer
 
