@@ -10,7 +10,7 @@ const Navbar = ({ links, variant, externalComponent: ExternalComponent }) => {
     <>
       <nav
         className={`flex items-center justify-between  py-2 px-10 ${
-          variant === "light" ? "bg-white text-black" : "bg-white-500 text-black"
+          variant === "light" ? "bg-white text-black" : "bg-white text-black"
         }`}
       >
         <div className="text-3xl font-bold text-gray-950">

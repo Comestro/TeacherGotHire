@@ -4,6 +4,8 @@ import Navbar from '../Navbar/Navbar'
 import { useNavigate } from 'react-router-dom';
 import ProfileButton from '../Profile_Button/Profile_Button';
 import Button from '../Button';
+import Footer from '../Footer/Footer';
+import TeacherLevelCard from '../TeacherLevelCard';
 
 function TeacherDashboard() {
   const profile = useSelector((state) => state.profile);
@@ -20,7 +22,7 @@ function TeacherDashboard() {
     };
 
   return (
-    <div>
+    <div >
       <nav className=''>
         <div className=''>
           <Navbar
@@ -34,8 +36,8 @@ function TeacherDashboard() {
               />
         </div>
        </nav>
-       <div className='flex w-full justify-center items-center mt-10 gap-8'>
-       <aside className=''>
+       <div className='flex w-full justify-center  mt-10'>
+       <aside className='w-[25%]'>
        <div className="w-64 p-6 bg-gray-100 h-screen">
                 {/* Profile Image and Completion */}
                 {/* Data will show through Api */}
@@ -62,14 +64,27 @@ function TeacherDashboard() {
                 {/* View Profile Button */}
                 <button
                   onClick={() => navigate("/profile")}
-                  className="block w-full bg-blue-500 text-white py-2 rounded-md text-center hover:bg-blue-600 transition"
+                  className="block w-full mt-5 bg-blue-500 text-white py-2 rounded-md text-center hover:bg-blue-600 transition"
                 >
                   View Profile
                 </button>
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="block w-full mt-5 bg-blue-500 text-white py-2 rounded-md text-center hover:bg-blue-600 transition"
+                >
+                  Help and Support
+                </button>
+
               </div> 
        </aside>
        <section className=''>
-            <div className="max-w-2xl mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
+            <div className='flex gap-8'>
+            <TeacherLevelCard   subject="Maths" marks={85} />
+            <TeacherLevelCard   subject="Science" marks={45} />
+            <TeacherLevelCard   subject="computer" marks={85} />
+            </div>
+            
+            <div className="w-2xl p-6 mt-8 bg-gray-100 rounded-lg shadow-lg">
             <h1 className="text-3xl font-bold text-blue-600 text-center mb-4">
               Become a Certified Tutor!
             </h1>
@@ -96,6 +111,7 @@ function TeacherDashboard() {
                    
             </section>
        </div>
+       <Footer/>
    </div>
     
   )
