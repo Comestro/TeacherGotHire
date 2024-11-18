@@ -1,17 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets
-from teacherhire.models import Subject , Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin
+from teacherhire.models import Subject ,Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin
 from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer,UserSerializer
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .models import *
-from teacherhire.models import Subject , Qualification,Teacher,Rating,Level,Question,Register,Login
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer,LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer, AdminLoginSerializer
-from .models import Teacher, AdminLogin
 import requests
+from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 
 # Create your views here.
@@ -21,19 +18,53 @@ def home(request):
 def dashboard(request):
     return render(request, "admin_panel/dashboard.html")
 
+#teacher
 def manage_teacher(request):
     response = requests.get("http://127.0.0.1:8000/api/teachers/").json()
     return render(request, "admin_panel/manage-teacher.html", {'response':response})
 
+@api_view(['DELETE'])
+def delete_teacher(request, pk):
+    teacher = get_object_or_404(Teacher, pk=pk)
+    teacher.delete()
+    #return redirect('manage_teacher')
+    return render(request, "admin_panel/manage-teacher.html")
+
+
+#Subject
 def manage_subject(request):
     response=requests.get("http://127.0.0.1:8000/api/subjects/").json()
     return render(request, "admin_panel/manage-subjects.html",{'response':response})
 
+@api_view(['DELETE'])
+def delete_subject(request, pk):
+    subject = get_object_or_404(Subject, pk=pk)
+    subject.delete()
+    return render(request, "admin_panel/manage-subjects.html")
+
+#Qualification
 def manage_qualification(request):
     response =requests.get("http://127.0.0.1:8000/api/qualifications/").json()
     return render(request, "admin_panel/manage-qualifications.html",{'response':response})
 
-def rating(request):
+@api_view(['DELETE'])
+def delete_quali(request, pk):
+    qualification = get_object_or_404(Qualification, pk=pk)
+    qualification.delete()
+    return render(request, "admin_panel/manage-qualifications.html")
+    #return Response({"message": "Qualification deleted successfully"}, status=204)
+
+#rating
+def manage_rating(request):
+    response=requests.get('http://127.0.0.1:8000/api/ratings/').json()
+    return render(request, "admin_panel/manage-rating.html",{'response':response})
+
+@api_view(['DELETE'])
+def delete_rating(request, pk):
+    rating = get_object_or_404(Rating, pk=pk)
+    rating.delete()
+    # return redirect('manage_rating')
+    #redirect(manage_rating)
     return render(request, "admin_panel/manage-rating.html")
 
 class RegisterUser(APIView):
@@ -46,20 +77,11 @@ class RegisterUser(APIView):
         user = User.objects.get(username = serializer.data['username'])
         token_obj, __ =Token.objects.get_or_create(user=user)
         return Response({'status':200,'payload':serializer.data, 'token':str(token_obj) ,'message':'your data is save'})
-
-def manage_rating(request):
-    response=requests.get('http://127.0.0.1:8000/api/ratings/').json()
-    return render(request, "admin_panel/manage-rating.html",{'response':response})
-
-@api_view(['DELETE'])
-def delete_rating(req, pk):
-    rating = get_object_or_404(Rating, pk=pk)
-    rating.delete()
-    redirect(manage_rating)
   
 class SubjectViewSet(viewsets.ModelViewSet):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
+
     queryset= Subject.objects.all()
     serializer_class=SubjectSerializer
 
