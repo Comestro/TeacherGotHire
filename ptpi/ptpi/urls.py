@@ -19,8 +19,6 @@ urlpatterns = [
     path("admin/manage/qualification/", manage_qualification, name='admin.manage.qualification'),
     path("admin/<int:pk>/delete/", delete_quali, name='admin.delete.qualification'),
    
-
-
     #Rating
     path("admin/manage/rating/", manage_rating, name='admin.manage.rating'),
     path("admin/<int:pk>/delete/", delete_rating, name='admin.delete.rating'),
@@ -30,4 +28,5 @@ urlpatterns = [
     path("home/",home),
     path("api/",include('teacherhire.urls'))
 
+    
 ]

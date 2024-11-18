@@ -1,20 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets
-from teacherhire.models import Subject , Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer,\
-    LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer,UserSerializer
+from teacherhire.models import Subject ,Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin
+from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer,UserSerializer
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .models import *
-from teacherhire.models import Subject , Qualification,Teacher,Rating,Level,Question,Register,Login
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer,LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer, AdminLoginSerializer
-from .models import Teacher, AdminLogin
 import requests
+from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
-
 
 # Create your views here.
 def home(request):
@@ -59,23 +54,18 @@ def delete_quali(request, pk):
     return render(request, "admin_panel/manage-qualifications.html")
     #return Response({"message": "Qualification deleted successfully"}, status=204)
 
-
 #rating
 def manage_rating(request):
     response=requests.get('http://127.0.0.1:8000/api/ratings/').json()
     return render(request, "admin_panel/manage-rating.html",{'response':response})
 
-
 @api_view(['DELETE'])
 def delete_rating(request, pk):
     rating = get_object_or_404(Rating, pk=pk)
     rating.delete()
-    #return redirect('manage_rating')
+    # return redirect('manage_rating')
     #redirect(manage_rating)
     return render(request, "admin_panel/manage-rating.html")
-
-  
-
 
 class RegisterUser(APIView):
     def post(self,request):
@@ -87,12 +77,10 @@ class RegisterUser(APIView):
         user = User.objects.get(username = serializer.data['username'])
         token_obj, __ =Token.objects.get_or_create(user=user)
         return Response({'status':200,'payload':serializer.data, 'token':str(token_obj) ,'message':'your data is save'})
-
-
+  
 class SubjectViewSet(viewsets.ModelViewSet):
-
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     queryset= Subject.objects.all()
     serializer_class=SubjectSerializer
