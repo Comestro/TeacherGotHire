@@ -28,12 +28,29 @@ def manage_teacher(request):
     response = requests.get("http://127.0.0.1:8000/api/teachers/").json()
     return render(request, "admin_panel/manage-teacher.html", {'response':response})
 
-@api_view(['DELETE'])
+@api_view(['DELETE','PUT'])
 def delete_teacher(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
     teacher.delete()
     #return redirect('manage_teacher')
     return render(request, "admin_panel/manage-teacher.html")
+
+
+def edit_teacher(request, pk):
+    teacher = get_object_or_404(Teacher, pk=pk)
+
+    if request.method == 'POST':
+        serializer = TeacherSerializer(teacher, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return redirect('manage_teacher')
+        return Response(serializer.errors, status=400)
+
+    else:
+        serializer = TeacherSerializer(teacher)
+        return render(request, "admin_panel/manage-teacher.html", {'form': serializer.data})
+
 
 
 #Subject
