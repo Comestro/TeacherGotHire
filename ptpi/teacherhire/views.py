@@ -159,8 +159,8 @@ class QualificationViewSet(viewsets.ModelViewSet):
     serializer_class=QualificationSerializer
 
 class TeacherViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
