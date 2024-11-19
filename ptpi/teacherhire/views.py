@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets
-from teacherhire.models import Subject ,Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin, Option
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer,UserSerializer, OptionSerializer
+from teacherhire.models import Subject ,Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin, Option, Skill
+from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer,UserSerializer, OptionSerializer, SkillSerializer
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -114,6 +114,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class OptionViewSet(viewsets.ModelViewSet):
     queryset = Option.objects.all()
     serializer_class=OptionSerializer
+    
+class SkillViewSet(viewsets.ModelViewSet):
+    queryset = Skill.objects.all()
+    serializer_class=SkillSerializer
 
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset= Register.objects.all()
