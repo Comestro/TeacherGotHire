@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken import views
-from teacherhire.views import home, dashboard, manage_teacher, manage_subject,manage_qualification, manage_rating,delete_rating,delete_teacher,delete_quali,delete_subject,edit_teacher
+from teacherhire.views import home, dashboard, manage_teacher, manage_subject,manage_questions,manage_qualification, manage_rating,delete_rating,delete_teacher,delete_quali,delete_subject,edit_teacher
 
 urlpatterns = [
     # admin panel url
