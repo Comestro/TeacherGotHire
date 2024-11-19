@@ -1,14 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-<<<<<<< HEAD
-from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin, Option, Skill
-from  django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-=======
 from django.contrib.auth import authenticate
 from teacherhire.models import Subject, Qualification, Teacher, Rating, Level, Question, Register, Login,\
       AdminLogin, Option, Skill
->>>>>>> 932021b1637b098054eb1e368f729f53441a1ebe
 
 # User Serializer for Registration and User Profile
 class UserSerializer(serializers.ModelSerializer):
@@ -46,34 +40,19 @@ class SkillSerializer(serializers.ModelSerializer):
         model = Skill
         fields = ['id', 'user_id', 'skill_name']
 
-<<<<<<< HEAD
-
-class TeacherSerializer(serializers.ModelSerializer):
-    user = UserSerializer() 
-    qualification = QualificationSerializer() 
-    subject = SubjectSerializer(many=True)  
-=======
 # Teacher Serializer
 class TeacherSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)  # Nested serializer, read-only
     qualification = QualificationSerializer(read_only=True)  # Nested serializer, read-only
     subject = SubjectSerializer(read_only=True)  # Nested serializer, read-only
->>>>>>> 932021b1637b098054eb1e368f729f53441a1ebe
 
     class Meta:
         model = Teacher
         fields = ['id', 'user', 'bio', 'experience_year', 'qualification', 'subject']
 
-<<<<<<< HEAD
-=======
 # Rating Serializer
 class RatingSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()  # Nested serializer to show teacher details
->>>>>>> 932021b1637b098054eb1e368f729f53441a1ebe
-
-
-class RatingSerializer(serializers.ModelSerializer):
-    teacher = TeacherSerializer()  
     class Meta:
         model = Rating
         fields = ['id', 'teacher', 'rating', 'comment']
@@ -96,11 +75,7 @@ class OptionSerializer(serializers.ModelSerializer):
         model = Option
         fields = "__all__"
 
-<<<<<<< HEAD
-
-=======
 # Registration Serializer (for User Registration)
->>>>>>> 932021b1637b098054eb1e368f729f53441a1ebe
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
