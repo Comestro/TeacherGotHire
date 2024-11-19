@@ -69,11 +69,6 @@ class OptionSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class RegisterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Register
-        fields = "__all__"
-
-class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
     class Meta:
@@ -107,11 +102,8 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
     def validate(self, data):
-        # Check if the email exists
         email = data.get('email')
         password = data.get('password')
-
-        # Look up the user by email and check the password
         user = authenticate(username=email, password=password)
 
         if not user:
