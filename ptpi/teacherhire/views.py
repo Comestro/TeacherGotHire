@@ -132,7 +132,7 @@ class RegisterUser(APIView):
         
 class LoginUser(APIView):
     def post(self, request):
-        email = request.data.get("email") 
+        email = request.data.get("email")
         password = request.data.get("password")
 
         if not email or not password:
@@ -140,9 +140,15 @@ class LoginUser(APIView):
                 'status': 400,
                 'message': 'Email and password are required.'
             }, status=status.HTTP_400_BAD_REQUEST)
-        user = authenticate(request, email=email, password=password)
 
-        if user is not None:
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({
+                'status': 401,
+                'message': 'Invalid credentials, please try again.'
+            }, status=status.HTTP_401_UNAUTHORIZED)
+        if user.check_password(password):
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)
 
