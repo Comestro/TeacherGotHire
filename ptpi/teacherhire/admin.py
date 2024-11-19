@@ -8,7 +8,7 @@ class SubjectAdmin(admin.ModelAdmin):
 
 @admin.register(Qualification)
 class QualificationAdmin(admin.ModelAdmin):
-    list_display = ['id', 'highest_qualification', 'institution', 'board']
+    list_display = ['id', 'qualification_name', 'institute', 'percentage']
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):

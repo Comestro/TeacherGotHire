@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question,Register,Login, AdminLogin
 from django.contrib.auth.models import User
-from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin
+from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin, Option
 from  django.contrib.auth.models import User
 
 
@@ -33,12 +33,14 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email']
 
 class TeacherSerializer(serializers.ModelSerializer):
-    user = UserSerializer() 
-    qualification = QualificationSerializer()
-    subject = SubjectSerializer()
+    user = UserSerializer(read_only=True)  # Make read-only
+    qualification = QualificationSerializer(read_only=True)  # Make read-only
+    subject = SubjectSerializer(read_only=True)  # Make read-only
+
     class Meta:
         model = Teacher
         fields = ['id', 'user', 'bio', 'experience_year', 'qualification', 'subject']
+
 
 
 class RatingSerializer(serializers.ModelSerializer):
@@ -56,6 +58,11 @@ class LevelSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
+        fields = "__all__"
+
+class OptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Option
         fields = "__all__"
 
 class RegisterSerializer(serializers.ModelSerializer):
