@@ -5,8 +5,12 @@ from teacherhire.serializers import SubjectSerializer,QualificationSerializer,Te
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.db import IntegrityError
+from rest_framework import status
+from django.contrib.auth import authenticate
 import requests
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
@@ -23,12 +27,29 @@ def manage_teacher(request):
     response = requests.get("http://127.0.0.1:8000/api/teachers/").json()
     return render(request, "admin_panel/manage-teacher.html", {'response':response})
 
-@api_view(['DELETE'])
+@api_view(['DELETE','PUT'])
 def delete_teacher(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
     teacher.delete()
     #return redirect('manage_teacher')
     return render(request, "admin_panel/manage-teacher.html")
+
+
+def edit_teacher(request, pk):
+    teacher = get_object_or_404(Teacher, pk=pk)
+
+    if request.method == 'POST':
+        serializer = TeacherSerializer(teacher, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return redirect('manage_teacher')
+        return Response(serializer.errors, status=400)
+
+    else:
+        serializer = TeacherSerializer(teacher)
+        return render(request, "admin_panel/manage-teacher.html", {'form': serializer.data})
+
 
 
 #Subject
@@ -74,16 +95,61 @@ def manage_questions(request):
     return render(request, "admin_panel/manage-question.html",data)
 
 class RegisterUser(APIView):
-    def post(self,request):
-        serializer= UserSerializer(data = request.data)
-
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
         if not serializer.is_valid():
-            return Response({'status':403,'errors': serializer.errors,'message':'Something went wrong '})
-        serializer.save()
-        user = User.objects.get(username = serializer.data['username'])
-        token_obj, __ =Token.objects.get_or_create(user=user)
-        return Response({'status':200,'payload':serializer.data, 'token':str(token_obj) ,'message':'your data is save'})
-  
+            return Response({
+                'status': 400,
+                'errors': serializer.errors,
+                'message': 'Invalid data provided.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user = serializer.save()
+        except IntegrityError as e:
+            return Response({
+                'status': 400,
+                'message': 'Username or email already exists.',
+                'errors': str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)        
+        refresh = RefreshToken.for_user(user)
+        # access_token = str(refresh.access_token)
+
+        return Response({
+            'status': 200,
+            'payload': serializer.data,
+            # 'token': access_token,
+            'message': 'User registered successfully.'
+        }, status=status.HTTP_201_CREATED)
+        
+        
+class LoginUser(APIView):
+    def post(self, request):
+        email = request.data.get("email") 
+        password = request.data.get("password")
+
+        if not email or not password:
+            return Response({
+                'status': 400,
+                'message': 'Email and password are required.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        user = authenticate(request, email=email, password=password)
+
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+
+            return Response({
+                'status': 200,
+                'message': 'Login successful.',
+                'token': access_token
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({
+                'status': 401,
+                'message': 'Invalid credentials, please try again.'
+            }, status=status.HTTP_401_UNAUTHORIZED)
+            
+            
 class SubjectViewSet(viewsets.ModelViewSet):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
@@ -92,22 +158,37 @@ class SubjectViewSet(viewsets.ModelViewSet):
     serializer_class=SubjectSerializer
 
 class QualificationViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset= Qualification.objects.all()
     serializer_class=QualificationSerializer
 
 class TeacherViewSet(viewsets.ModelViewSet):
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
 
 class RatingViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset= Rating.objects.all()
     serializer_class=RatingSerializer
 
 class LevelViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset= Level.objects.all()
     serializer_class=LevelSerializer
 
 class QuestionViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     queryset= Question.objects.all()
     serializer_class=QuestionSerializer
 
