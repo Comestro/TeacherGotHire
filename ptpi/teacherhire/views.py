@@ -94,6 +94,14 @@ def manage_questions(request):
     data['options']=requests.get('http://127.0.0.1:8000/api/options/').json()
     return render(request, "admin_panel/manage-question.html",data)
 
+@api_view(['DELETE'])
+def delete_question(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+    question.delete()
+    # return redirect('manage_rating')
+    #redirect(manage_rating)
+    return render(request, "admin_panel/manage-question.html")
+
 class RegisterUser(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -211,3 +219,4 @@ class LoginViewSet(viewsets.ModelViewSet):
 class AdminLoginViewSet(viewsets.ModelViewSet):
     queryset= AdminLogin.objects.all()
     serializer_class=AdminLoginSerializer
+

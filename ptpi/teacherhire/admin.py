@@ -12,7 +12,10 @@ class QualificationAdmin(admin.ModelAdmin):
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ['user', 'bio', 'experience_year', 'qualification', 'subject']
+    list_display = ['user', 'bio', 'experience_year', 'qualification', 'display_subjects']
+    def display_subjects(self, obj):
+        return ", ".join([subject.title for subject in obj.subject.all()])
+    display_subjects.short_description = 'Subjects'
 
 @admin.register(Rating)
 class RatingAdmin(admin.ModelAdmin):  

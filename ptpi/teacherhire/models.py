@@ -18,6 +18,7 @@ class Subject(models.Model):
     
 class Skill(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+
     skill_name = models.CharField(max_length=400, null=True, blank=True)
 
     def __str__(self):
@@ -47,7 +48,7 @@ class Teacher(models.Model):
     bio = models.TextField(null=True, blank=True)
     experience_year = models.IntegerField(null=True, blank=True)
     qualification = models.ForeignKey(Qualification, on_delete=models.CASCADE, null=True, blank=True, related_name='qualification')
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True, related_name='subject') 
+    subject = models.ManyToManyField(Subject, related_name='teachers') 
     def __str__(self):
         return self.user.username if self.user else "Unknown Teacher"
 
