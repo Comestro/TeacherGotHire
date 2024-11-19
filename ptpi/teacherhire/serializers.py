@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from teacherhire.models import Subject, Qualification, Teacher, Rating, Level, Question, Register, Login, AdminLogin
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from teacherhire.models import Subject, Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin, Option, Skill
+from  django.contrib.auth.models import User
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,15 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'password']
 
     def create(self, validated_data):
-        """
-        Create a new user and hash the password automatically.
-        """
-        # Ensure password is hashed
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-        )
+        user = User.objects.create(username = validated_data['username'])
+        user.set_password(validated_data['password'])
+        user.save()
         return user
 
 
@@ -33,15 +28,21 @@ class QualificationSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class SkillSerializer(serializers.ModelSerializer):
+    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  
+
+    class Meta:
+        model = Skill
+        fields = ['id', 'user_id', 'skill_name']
+
 class TeacherSerializer(serializers.ModelSerializer):
-    user = UserSerializer() 
-    qualification = QualificationSerializer()
-    subject = SubjectSerializer()
+    user = UserSerializer(read_only=True)  # Make read-only
+    qualification = QualificationSerializer(read_only=True)  # Make read-only
+    subject = SubjectSerializer(read_only=True)  # Make read-only
 
     class Meta:
         model = Teacher
         fields = ['id', 'user', 'bio', 'experience_year', 'qualification', 'subject']
-
 
 class RatingSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()  # Nested serializer to show teacher details
@@ -62,6 +63,15 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = "__all__"
 
+class OptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Option
+        fields = "__all__"
+
+class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Register
+        fields = "__all__"
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(style={'input_type': 'password'}, write_only=True)

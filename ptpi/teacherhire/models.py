@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.timezone import now
 
+# subject model
 class Subject(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
@@ -11,21 +12,20 @@ class Subject(models.Model):
     backlogs = models.CharField(max_length=400, default="No Backlogs")  
     created_at = models.DateTimeField(default=now)  
     updated_at = models.DateTimeField(auto_now=True)  
+
     def __str__(self):
         return self.title
     
 class Skill(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     skill_name = models.CharField(max_length=400, null=True, blank=True)
 
     def __str__(self):
         return self.skill_name
 
 class Qualification(models.Model):
-    # userid, skill(teacherid, , skillname), 
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    skill_name = models.ForeignKey(Skill, on_delete=models.CASCADE, null=True, blank=True)
-    highest_qualification = models.CharField(
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    qualification_name = models.CharField(
         max_length=200,
         null=True,
         blank=True,
@@ -35,15 +35,11 @@ class Qualification(models.Model):
             ("MA", "MA"), ("MBA", "MBA"), ("B.Ed", "B.Ed"), ("M.Ed", "M.Ed")
         ]
     )
-    institution = models.CharField(max_length=200, null=True, blank=True)
-    board = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-        choices=[('BSEB', 'BSEB'), ('CBSE', 'CBSE'), ('ICSE', 'ICSE')]
-    )
+    institute = models.CharField(max_length=200, null=True, blank=True)
+    percentage = models.FloatField(null=True, blank=True)
+
     def __str__(self):
-        return self.highest_qualification or "Unknown Qualification"
+        return self.qualification_name 
 
 
 class Teacher(models.Model):
@@ -51,7 +47,7 @@ class Teacher(models.Model):
     bio = models.TextField(null=True, blank=True)
     experience_year = models.IntegerField(null=True, blank=True)
     qualification = models.ForeignKey(Qualification, on_delete=models.CASCADE, null=True, blank=True, related_name='qualification')
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True, related_name='subject')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True, related_name='subject') 
     def __str__(self):
         return self.user.username if self.user else "Unknown Teacher"
 
@@ -67,7 +63,6 @@ class Rating(models.Model):
         return f"Rating: {self.rating or 'N/A'}"
 
 class Level(models.Model):
-    # subjectid
     subject_id = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True)
     name=models.CharField(max_length=400,null=True,blank=True)
     description= models.CharField(max_length=400,null=True,blank=True)
@@ -77,13 +72,22 @@ class Level(models.Model):
         return self.name
     
 class Question(models.Model):
-    subject_id = models.IntegerField(null=True,blank=True)
-    question = models.CharField(max_length=200,null=True,blank=True)
-    answer = models.CharField(max_length=200,null=True,blank=True)
-    level= models.ForeignKey(Level, on_delete=models.CASCADE)
-    options = models.CharField(max_length=200,null=True,blank=True)
+    subject_id = models.IntegerField(null=True, blank=True)
+    question = models.CharField(max_length=200, null=True, blank=True)
+    answer = models.CharField(max_length=200, null=True, blank=True)
+    level = models.ForeignKey(Level, on_delete=models.CASCADE)
+
     def __str__(self):
-        return self.subject_id
+        return self.question
+    
+class Option(models.Model):
+    question = models.ForeignKey(Question, related_name="options", on_delete=models.CASCADE)  # Multiple options for each question
+    option = models.CharField(max_length=200, null=True, blank=True)  # The text of the option
+    is_correct = models.BooleanField(default=False)  # Mark the correct answer (optional)
+
+    def __str__(self):
+        return self.option
+
     
 class Register(models.Model):
     Fname = models.CharField(max_length=500)

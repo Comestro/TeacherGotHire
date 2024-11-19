@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets
-from teacherhire.models import Subject ,Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer,UserSerializer
+from teacherhire.models import Subject ,Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin, Option, Skill
+from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer,UserSerializer, OptionSerializer, SkillSerializer
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -72,7 +72,7 @@ def manage_qualification(request):
 def delete_quali(request, pk):
     qualification = get_object_or_404(Qualification, pk=pk)
     qualification.delete()
-    return render(request, "admin_panel/manage-qualifications.html")
+    return redirect(manage_qualification)
     #return Response({"message": "Qualification deleted successfully"}, status=204)
 
 #rating
@@ -87,6 +87,12 @@ def delete_rating(request, pk):
     # return redirect('manage_rating')
     #redirect(manage_rating)
     return render(request, "admin_panel/manage-rating.html")
+
+def manage_questions(request):
+    data = {}
+    data['response']=requests.get('http://127.0.0.1:8000/api/questions/').json()
+    data['options']=requests.get('http://127.0.0.1:8000/api/options/').json()
+    return render(request, "admin_panel/manage-question.html",data)
 
 class RegisterUser(APIView):
     def post(self, request):
@@ -185,6 +191,14 @@ class QuestionViewSet(viewsets.ModelViewSet):
     
     queryset= Question.objects.all()
     serializer_class=QuestionSerializer
+
+class OptionViewSet(viewsets.ModelViewSet):
+    queryset = Option.objects.all()
+    serializer_class=OptionSerializer
+    
+class SkillViewSet(viewsets.ModelViewSet):
+    queryset = Skill.objects.all()
+    serializer_class=SkillSerializer
 
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset= Register.objects.all()
