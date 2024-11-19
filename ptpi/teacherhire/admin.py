@@ -18,7 +18,6 @@ class TeacherAdmin(admin.ModelAdmin):
 class RatingAdmin(admin.ModelAdmin):  
     list_display = ['teacher', 'rating', 'comment']
 
-
 @admin.register(Register)
 class RatingAdmin(admin.ModelAdmin):  
     list_display = ['Fname', 'Lname', 'email','password','contact']

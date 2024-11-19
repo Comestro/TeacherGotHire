@@ -1,22 +1,21 @@
 {% extends "admin_panel/layout.html" %}
 {% block content %}
 <div class="flex">
-    <table class="w-full border-collapse shadow-md p-[10%] m-5 rounded-lg">
+    <table class="w-full border-collapse shadow-md p-[10%] mx-14 my-5 rounded-lg">
         <thead class="bg-slate-200">
             <th class="px-2 py-1">Id</th>
-            <th class="px-2 py-1">Highest Qualification</th>
+            <th class="px-2 py-1">Qualification</th>
             <th class="px-2 py-1">institution</th>
-            <th class="px-2 py-1">board</th>
+            <th class="px-2 py-1">Percentage</th>
             <th class="px-2 py-1">Action</th>
-           
         </thead>
         <tbody class="bg-white divide-y divide-gray-300">
             {% for qua in response  %}
             <tr class="text-gray-700">
                 <td class="px-2 py-1 text-center">{{qua.id}}</td>
-                <td class="px-2 py-1 text-center">{{qua.highest_qualification}}</td>
-                <td class="px-2 py-1 text-center">{{qua.institution}}</td>
-                <td class="px-2 py-1 text-center">{{qua.board}}</td>
+                <td class="px-2 py-1 text-center">{{qua.qualification_name}}</td>
+                <td class="px-2 py-1 text-center">{{qua.institute}}</td>
+                <td class="px-2 py-1 text-center">{{qua.percentage}}</td>
                 
                 <td class="px-2 py-1 text-center flex flex-1 justify-center items-center gap-2">
                     <a href="" class="">
