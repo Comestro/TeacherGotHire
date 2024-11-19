@@ -110,7 +110,7 @@ class LoginSerializer(serializers.Serializer):
         data['user'] = user
         return data
 
-
+#login work
 class AdminLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdminLogin 
