@@ -16,7 +16,7 @@ router.register(r'questions',QuestionViewSet)
 router.register(r'options',OptionViewSet)
 router.register(r'skills',SkillViewSet)
 router.register(r'registers',RegisterViewSet)
-router.register(r'login',LoginViewSet)
+# router.register(r'login',LoginViewSet)
 router.register(r'adminlogin',AdminLoginViewSet)
 
 urlpatterns = [

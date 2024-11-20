@@ -84,18 +84,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['email', 'username', 'password']
 
     def validate_email(self, value):
-        """Ensure email is unique."""
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("A user with this email already exists.")
         return value
 
     def create(self, validated_data):
-        """Create and return a new user instance with hashed password."""
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
         )
-        user.set_password(validated_data['password'])  # Hash the password before saving
+        user.set_password(validated_data['password'])
         user.save()
         return user
 
@@ -108,13 +106,12 @@ class LoginSerializer(serializers.Serializer):
         email = data.get('email')
         password = data.get('password')
 
-        # Authenticate using email as username
         user = authenticate(username=email, password=password)
         
         if not user:
             raise serializers.ValidationError("Invalid email or password, please try again.")
         
-        data['user'] = user  # Add the user to the validated data
+        data['user'] = user
         return data
 
 # AdminLogin Serializer (for Admin Login)
