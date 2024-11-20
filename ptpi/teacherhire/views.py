@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.db import IntegrityError
@@ -165,64 +166,68 @@ class LoginUser(APIView):
             
             
 class SubjectViewSet(viewsets.ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
-
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset= Subject.objects.all()
     serializer_class=SubjectSerializer
 
 class QualificationViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-
     queryset= Qualification.objects.all()
     serializer_class=QualificationSerializer
 
 class TeacherViewSet(viewsets.ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
-
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
 
 class RatingViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     queryset= Rating.objects.all()
     serializer_class=RatingSerializer
 
 class LevelViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     queryset= Level.objects.all()
     serializer_class=LevelSerializer
 
 class QuestionViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     
     queryset= Question.objects.all()
     serializer_class=QuestionSerializer
 
 class OptionViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Option.objects.all()
     serializer_class=OptionSerializer
     
 class SkillViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Skill.objects.all()
     serializer_class=SkillSerializer
 
 class RegisterViewSet(viewsets.ModelViewSet):
+    
     queryset= Register.objects.all()
     serializer_class=RegisterSerializer
 
 class LoginViewSet(viewsets.ModelViewSet):
+
     queryset= Login.objects.all()
     serializer_class=LoginSerializer
 
 class AdminLoginViewSet(viewsets.ModelViewSet):
+   
     queryset= AdminLogin.objects.all()
     serializer_class=AdminLoginSerializer
 

@@ -21,6 +21,7 @@ router.register(r'adminlogin',AdminLoginViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('auth/',include('rest_framework.urls',namespace='rest_framework')),
     path('register/', RegisterUser.as_view(), name='register'),
     path('login/', LoginUser.as_view(), name='login'),
 ]
