@@ -220,13 +220,11 @@ class SkillViewSet(viewsets.ModelViewSet):
     queryset = Skill.objects.all()
     serializer_class=SkillSerializer
 
-class RegisterViewSet(viewsets.ModelViewSet):
-    
+class RegisterViewSet(viewsets.ModelViewSet): 
     queryset= Register.objects.all()
     serializer_class=RegisterSerializer
 
 class LoginViewSet(viewsets.ModelViewSet):
-
     queryset= Login.objects.all()
     serializer_class=LoginSerializer
 
