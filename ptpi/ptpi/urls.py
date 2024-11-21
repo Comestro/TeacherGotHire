@@ -7,32 +7,30 @@ urlpatterns = [
     # admin panel url
     path("home/", home),
     path("admin/dashboard/", dashboard, name='admin.dashboard'),
-    #Teachers
+
+    # Teachers
     path("admin/manage/teacher/", manage_teacher, name='admin.manage.teacher'),
     path("admin/<int:pk>/delete/teacher/", delete_teacher, name='admin.delete.teacher'),
     path("admin/<int:pk>/delete/", delete_teacher, name='admin.delete.teacher'),
     path("admin/<int:pk>/edit/", edit_teacher, name='admin.edit.teacher'),
 
-
-    #Subjects
+    # Subjects
     path("admin/manage/subject/", manage_subject, name='admin.manage.subject'),
     path("admin/<int:pk>/delete/subject/", delete_subject, name='admin.delete.subject'),
 
-    #Qualification
+    # Qualification
     path("admin/manage/qualification/", manage_qualification, name='admin.manage.qualification'),
     path("admin/<int:pk>/delete/qualification/", delete_quali, name='admin.delete.qualification'),
-   
-    #Rating
+
+    # Rating
     path("admin/manage/rating/", manage_rating, name='admin.manage.rating'),
     path("admin/<int:pk>/delete/rating/", delete_rating, name='admin.delete.rating'),
 
-    #Question 
+    # Question 
     path("admin/manage/question/", manage_questions, name='admin.manage.question'),
 
-    
     path('admin/', admin.site.urls),
     path('api-token-auth/', views.obtain_auth_token),
     path("home/",home),
     path("api/",include('teacherhire.urls'))
-    
 ]
