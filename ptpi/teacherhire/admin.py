@@ -27,4 +27,4 @@ class RatingAdmin(admin.ModelAdmin):
 
 @admin.register(Question)
 class Question(admin.ModelAdmin):
-    list_display = ['subject_id', 'question', 'answer', 'level']
+    list_display = ['subject_id', 'question', 'level']

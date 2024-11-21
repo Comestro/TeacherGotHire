@@ -7,14 +7,14 @@ from teacherhire.views import (
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'subjects',SubjectViewSet)
-router.register(r"qualifications",QualificationViewSet)
-router.register(r"teachers",TeacherViewSet)
-router.register(r'ratings',RatingViewSet)
-router.register(r'levels',LevelViewSet)
-router.register(r'questions',QuestionViewSet)
-router.register(r'options',OptionViewSet)
-router.register(r'skills',SkillViewSet)
+router.register(r'admin/subjects',SubjectViewSet)
+router.register(r"admin/qualifications",QualificationViewSet)
+router.register(r"admin/teachers",TeacherViewSet)
+router.register(r'admin/ratings',RatingViewSet)
+router.register(r'admin/levels',LevelViewSet)
+router.register(r'admin/questions',QuestionViewSet)
+router.register(r'admin/options',OptionViewSet)
+router.register(r'admin/skills',SkillViewSet)
 router.register(r'registers',RegisterViewSet)
 # router.register(r'login',LoginViewSet)
 
