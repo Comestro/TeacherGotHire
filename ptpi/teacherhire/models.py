@@ -105,10 +105,3 @@ class Login(models.Model):
     password = models.CharField(max_length=200)
     def __str__(self):
         return self.email
-
-class AdminLogin(models.Model):
-    email = models.EmailField()
-    password = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.email
