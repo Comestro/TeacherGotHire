@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Subject, Qualification, Teacher, Rating,Register
+from .models import Subject, Qualification, Teacher, Rating,Register, Question
 
 # Register your models here.
 @admin.register(Subject)
@@ -24,3 +24,7 @@ class RatingAdmin(admin.ModelAdmin):
 @admin.register(Register)
 class RatingAdmin(admin.ModelAdmin):  
     list_display = ['Fname', 'Lname', 'email','password','contact']
+
+@admin.register(Question)
+class Question(admin.ModelAdmin):
+    list_display = ['subject_id', 'question', 'answer', 'level']
