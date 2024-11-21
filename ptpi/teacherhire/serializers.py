@@ -40,11 +40,11 @@ class SkillSerializer(serializers.ModelSerializer):
         model = Skill
         fields = ['id', 'user_id', 'skill_name']
 
-# Teacher Serializer
+# Teacher Serializer 
 class TeacherSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)  # Nested serializer, read-only
-    qualification = QualificationSerializer(read_only=True)  # Nested serializer, read-only
-    subject = SubjectSerializer(read_only=True)  # Nested serializer, read-only
+    # qualification = QualificationSerializer(read_only=True)  # Nested serializer, read-only
+    # subject = SubjectSerializer(read_only=True)  # Nested serializer, read-only
 
     class Meta:
         model = Teacher
