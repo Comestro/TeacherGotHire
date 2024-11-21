@@ -182,8 +182,7 @@ class QualificationViewSet(viewsets.ModelViewSet):
     queryset= Qualification.objects.all()
     serializer_class=QualificationSerializer
 
-class TeacherViewSet(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication]
+class TeacherViewSet(viewsets.ModelViewSet):    
     permission_classes = [IsAuthenticated]
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
