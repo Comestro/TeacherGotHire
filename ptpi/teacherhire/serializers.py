@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from teacherhire.models import Subject, Qualification, Teacher, Rating, Level, Question, Register, Login,\
-      AdminLogin, Option, Skill
+from teacherhire.models import Subject, Qualification, Teacher, Rating, Level, Question, Register, Login, Option, Skill
 
 # User Serializer for Registration and User Profile
 class UserSerializer(serializers.ModelSerializer):
@@ -113,8 +112,5 @@ class LoginSerializer(serializers.Serializer):
         data['user'] = user
         return data
 
-# AdminLogin Serializer (for Admin Login)
-class AdminLoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AdminLogin
-        fields = "__all__"
+
+

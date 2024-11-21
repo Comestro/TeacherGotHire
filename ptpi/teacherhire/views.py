@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets
-from teacherhire.models import Subject ,Qualification,Teacher,Rating,Level,Question,Register,Login,AdminLogin, Option, Skill
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,AdminLoginSerializer,UserSerializer, OptionSerializer, SkillSerializer
+from teacherhire.models import Subject ,Qualification,Teacher,Rating,Level,Question,Register,Login, Option, Skill
+from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,UserSerializer, OptionSerializer, SkillSerializer
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -167,6 +167,7 @@ class LoginUser(APIView):
                 'status': 401,
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
+
             
             
 class SubjectViewSet(viewsets.ModelViewSet):
@@ -219,18 +220,12 @@ class SkillViewSet(viewsets.ModelViewSet):
     queryset = Skill.objects.all()
     serializer_class=SkillSerializer
 
-class RegisterViewSet(viewsets.ModelViewSet):
-    
+class RegisterViewSet(viewsets.ModelViewSet): 
     queryset= Register.objects.all()
     serializer_class=RegisterSerializer
 
 class LoginViewSet(viewsets.ModelViewSet):
-
     queryset= Login.objects.all()
     serializer_class=LoginSerializer
 
-class AdminLoginViewSet(viewsets.ModelViewSet):
-   
-    queryset= AdminLogin.objects.all()
-    serializer_class=AdminLoginSerializer
 

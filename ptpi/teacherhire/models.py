@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.timezone import now
 
+
 # subject model
 class Subject(models.Model):
     title = models.CharField(max_length=200)
@@ -73,7 +74,7 @@ class Level(models.Model):
         return self.name
     
 class Question(models.Model):
-    subject_id = models.IntegerField(null=True, blank=True)
+    subject_id = models.ForeignKey(Subject, on_delete=models.CASCADE)
     question = models.CharField(max_length=200, null=True, blank=True)
     answer = models.CharField(max_length=200, null=True, blank=True)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
@@ -102,12 +103,5 @@ class Register(models.Model):
 class Login(models.Model):
     email = models.EmailField()
     password = models.CharField(max_length=200)
-    def __str__(self):
-        return self.email
-
-class AdminLogin(models.Model):
-    email = models.EmailField()
-    password = models.CharField(max_length=200)
-
     def __str__(self):
         return self.email

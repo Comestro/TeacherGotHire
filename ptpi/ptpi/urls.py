@@ -11,7 +11,6 @@ urlpatterns = [
     # Teachers
     path("admin/manage/teacher/", manage_teacher, name='admin.manage.teacher'),
     path("admin/<int:pk>/delete/teacher/", delete_teacher, name='admin.delete.teacher'),
-    path("admin/<int:pk>/delete/", delete_teacher, name='admin.delete.teacher'),
     path("admin/<int:pk>/edit/", edit_teacher, name='admin.edit.teacher'),
 
     # Subjects
