@@ -9,7 +9,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'subjects',SubjectViewSet)
 router.register(r"qualifications",QualificationViewSet)
-router.register(r"teachers",TeacherViewSet)
+# router.register(r"teachers",TeacherViewSet)
 router.register(r'ratings',RatingViewSet)
 router.register(r'levels',LevelViewSet)
 router.register(r'questions',QuestionViewSet)
@@ -23,5 +23,5 @@ urlpatterns = [
     path('auth/',include('rest_framework.urls',namespace='rest_framework')),
     path('register/', RegisterUser.as_view(), name='register'),
     path('login/', LoginUser.as_view(), name='login'),
-    path('teacher/', TeacherViewSet.as_view({'get': 'list'}), name='teacher'),
+    path('admin/teacher/view/', TeacherViewSet.as_view({'get': 'list'}), name='teacher'),
 ]
