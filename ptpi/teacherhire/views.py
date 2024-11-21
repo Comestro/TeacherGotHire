@@ -6,10 +6,12 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.db import IntegrityError
 from rest_framework import status
+from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import authenticate
 import requests
 from django.contrib.auth.models import User
@@ -120,21 +122,20 @@ class RegisterUser(APIView):
                 'errors': str(e)
             }, status=status.HTTP_400_BAD_REQUEST)        
         refresh = RefreshToken.for_user(user)
-        # access_token = str(refresh.access_token)
+        access_token = str(refresh.access_token)
 
         return Response({
             'status': 200,
             'payload': serializer.data,
-            # 'token': access_token,
+            'token': access_token,
             'message': 'User registered successfully.'
         }, status=status.HTTP_201_CREATED)
         
         
 class LoginUser(APIView):
-    def post(self, request):
+    def post(self, request):        
         email = request.data.get("email")
-        password = request.data.get("password")
-
+        password = request.data.get("password")        
         if not email or not password:
             return Response({
                 'status': 400,
@@ -148,14 +149,18 @@ class LoginUser(APIView):
                 'status': 401,
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
+        if not user.is_active:
+           raise AuthenticationFailed("Account is disabled, please contact support.")
+       
         if user.check_password(password):
             refresh = RefreshToken.for_user(user)
-            access_token = str(refresh.access_token)
+            access_token = str(refresh.access_token)            
 
             return Response({
-                'status': 200,
+                'status': 200,                
                 'message': 'Login successful.',
-                'token': access_token
+                'token': access_token,
+                'refresh': str(refresh),
             }, status=status.HTTP_200_OK)
         else:
             return Response({
@@ -166,64 +171,68 @@ class LoginUser(APIView):
             
             
 class SubjectViewSet(viewsets.ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
-
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset= Subject.objects.all()
     serializer_class=SubjectSerializer
 
 class QualificationViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-
     queryset= Qualification.objects.all()
     serializer_class=QualificationSerializer
 
 class TeacherViewSet(viewsets.ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
-
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
 
 class RatingViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     queryset= Rating.objects.all()
     serializer_class=RatingSerializer
 
 class LevelViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     queryset= Level.objects.all()
     serializer_class=LevelSerializer
 
 class QuestionViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     
     queryset= Question.objects.all()
     serializer_class=QuestionSerializer
 
 class OptionViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Option.objects.all()
     serializer_class=OptionSerializer
     
 class SkillViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Skill.objects.all()
     serializer_class=SkillSerializer
 
 class RegisterViewSet(viewsets.ModelViewSet):
+    
     queryset= Register.objects.all()
     serializer_class=RegisterSerializer
 
 class LoginViewSet(viewsets.ModelViewSet):
+
     queryset= Login.objects.all()
     serializer_class=LoginSerializer
 
 class AdminLoginViewSet(viewsets.ModelViewSet):
+   
     queryset= AdminLogin.objects.all()
     serializer_class=AdminLoginSerializer
 

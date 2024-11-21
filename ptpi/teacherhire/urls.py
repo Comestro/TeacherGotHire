@@ -1,6 +1,9 @@
 from django.contrib import admin
-from django.urls import path,include
-from teacherhire.views import SubjectViewSet,QualificationViewSet,TeacherViewSet,RatingViewSet,LevelViewSet,QuestionViewSet,RegisterViewSet,LoginViewSet,RegisterUser,AdminLoginViewSet, OptionViewSet, SkillViewSet, LoginUser
+from django.urls import path, include
+from teacherhire.views import (
+    SubjectViewSet, QualificationViewSet, TeacherViewSet, RatingViewSet, 
+    LevelViewSet, QuestionViewSet, RegisterUser, LoginUser, AdminLoginViewSet,OptionViewSet,SkillViewSet,LoginViewSet,RegisterViewSet
+    )
 from rest_framework import routers
 
 router = routers.DefaultRouter()
@@ -13,12 +16,12 @@ router.register(r'questions',QuestionViewSet)
 router.register(r'options',OptionViewSet)
 router.register(r'skills',SkillViewSet)
 router.register(r'registers',RegisterViewSet)
-router.register(r'login',LoginViewSet)
+# router.register(r'login',LoginViewSet)
 router.register(r'adminlogin',AdminLoginViewSet)
-
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('auth/',include('rest_framework.urls',namespace='rest_framework')),
     path('register/', RegisterUser.as_view(), name='register'),
     path('login/', LoginUser.as_view(), name='login'),
 ]
