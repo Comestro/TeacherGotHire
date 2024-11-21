@@ -11,6 +11,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.db import IntegrityError
 from rest_framework import status
+from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import authenticate
 import requests
 from django.contrib.auth.models import User
@@ -132,10 +133,9 @@ class RegisterUser(APIView):
         
         
 class LoginUser(APIView):
-    def post(self, request):
+    def post(self, request):        
         email = request.data.get("email")
-        password = request.data.get("password")
-        # return Response({key:value})
+        password = request.data.get("password")        
         if not email or not password:
             return Response({
                 'status': 400,
@@ -149,14 +149,18 @@ class LoginUser(APIView):
                 'status': 401,
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
+        if not user.is_active:
+           raise AuthenticationFailed("Account is disabled, please contact support.")
+       
         if user.check_password(password):
             refresh = RefreshToken.for_user(user)
-            access_token = str(refresh.access_token)
+            access_token = str(refresh.access_token)            
 
             return Response({
-                'status': 200,
+                'status': 200,                
                 'message': 'Login successful.',
-                'token': access_token
+                'token': access_token,
+                'refresh': str(refresh),
             }, status=status.HTTP_200_OK)
         else:
             return Response({
