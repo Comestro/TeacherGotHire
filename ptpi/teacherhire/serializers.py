@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
-        fields = ['id', 'title', 'description', 'marks', 'status', 'backlogs', 'created_at', 'updated_at']
+        fields = ['id','title', 'description', 'marks', 'status', 'backlogs']
 
 # Qualification Serializer
 class QualificationSerializer(serializers.ModelSerializer):

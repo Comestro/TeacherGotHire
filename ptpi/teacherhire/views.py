@@ -168,11 +168,30 @@ class LoginUser(APIView):
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
            
-class SubjectViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
-    queryset= Subject.objects.all()
-    serializer_class=SubjectSerializer
+class SubjectCreateView(APIView):
+    def post(self, request):
+        serializer = SubjectSerializer(data=request.data)
+        if serializer.is_valid():            
+            Subject = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class LevelCreateView(APIView):
+    def post(self, request):
+        serializer = LevelSerializer(data=request.data)
+        if serializer.is_valid():            
+            Level = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class OptionCreateView(APIView):
+    def post(self,request):
+        serializer = OptionSerializer(data=request.data)
+        if serializer.is_valid():
+            Option = serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+    
 class QualificationViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
