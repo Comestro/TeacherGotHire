@@ -167,9 +167,7 @@ class LoginUser(APIView):
                 'status': 401,
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
-
-            
-            
+           
 class SubjectViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset= Subject.objects.all()
