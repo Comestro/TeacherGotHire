@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
-        fields = ['id','title', 'description', 'marks', 'status', 'backlogs']
+        fields = ['id', 'title', 'description', 'marks', 'status', 'backlogs', 'created_at', 'updated_at']
 
 # Qualification Serializer
 class QualificationSerializer(serializers.ModelSerializer):
@@ -56,7 +56,7 @@ class RatingSerializer(serializers.ModelSerializer):
         fields = ['id', 'teacher', 'rating', 'comment']
 
 # Level Serializer
-class LevelSerializer(serializers.ModelSerializer):    
+class LevelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Level
         fields = "__all__"

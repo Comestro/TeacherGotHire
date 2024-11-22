@@ -167,35 +167,9 @@ class LoginUser(APIView):
                 'status': 401,
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
-
-            
-
-class SubjectCreateView(APIView):
-    def post(self, request):
-        serializer = SubjectSerializer(data=request.data)
-        if serializer.is_valid():            
-            Subject = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class LevelCreateView(APIView):
-    def post(self, request):
-        serializer = LevelSerializer(data=request.data)
-        if serializer.is_valid():            
-            Level = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class OptionCreateView(APIView):
-    def post(self,request):
-        serializer = OptionSerializer(data=request.data)
-        if serializer.is_valid():
-            Option = serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-    
+           
 class SubjectViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]    
+    permission_classes = [IsAuthenticated]
     queryset= Subject.objects.all()
     serializer_class=SubjectSerializer
 
@@ -214,20 +188,26 @@ class TeacherViewSet(viewsets.ModelViewSet):
 class RatingViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     queryset= Rating.objects.all()
     serializer_class=RatingSerializer
 
-class LevelViewSet(viewsets.ModelViewSet):    
+class LevelViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     queryset= Level.objects.all()
     serializer_class=LevelSerializer
 
-class QuestionViewSet(viewsets.ModelViewSet):    
-    permission_classes = [IsAuthenticated]        
+class QuestionViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     queryset= Question.objects.all()
     serializer_class=QuestionSerializer
 
-class OptionViewSet(viewsets.ModelViewSet):    
+class OptionViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = Option.objects.all()
     serializer_class=OptionSerializer
