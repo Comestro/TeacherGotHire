@@ -224,7 +224,7 @@ class LevelViewSet(viewsets.ModelViewSet):
 
 class QuestionViewSet(viewsets.ModelViewSet):    
     permission_classes = [IsAuthenticated]        
-    queryset= Question.objects.all()
+    queryset= Question.objects.select_related('Level').prefetch_related('option')
     serializer_class=QuestionSerializer
 
 class OptionViewSet(viewsets.ModelViewSet):    

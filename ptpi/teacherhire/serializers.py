@@ -61,16 +61,19 @@ class LevelSerializer(serializers.ModelSerializer):
         model = Level
         fields = "__all__"
 
-# Question Serializer
-class QuestionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Question
-        fields = "__all__"
 
 # Option Serializer
-class OptionSerializer(serializers.ModelSerializer):
+class OptionSerializer(serializers.ModelSerializer):    
     class Meta:
         model = Option
+        fields = "__all__"
+        
+# Question Serializer         
+class QuestionSerializer(serializers.ModelSerializer):
+    option = OptionSerializer(many=True,read_only=True)
+    level = LevelSerializer(read_only=True)
+    class Meta:
+        model = Question
         fields = "__all__"
 
 # Registration Serializer (for User Registration)
