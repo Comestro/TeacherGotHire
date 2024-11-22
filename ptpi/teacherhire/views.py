@@ -171,7 +171,6 @@ class LoginUser(APIView):
             
             
 class SubjectViewSet(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     queryset= Subject.objects.all()
     serializer_class=SubjectSerializer
@@ -184,8 +183,9 @@ class QualificationViewSet(viewsets.ModelViewSet):
 
 class TeacherViewSet(viewsets.ModelViewSet):    
     permission_classes = [IsAuthenticated]
-    queryset = Teacher.objects.all()
+    queryset = Teacher.objects.select_related('user', 'qualification').prefetch_related('subject')
     serializer_class = TeacherSerializer
+
 
 class RatingViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
@@ -220,13 +220,11 @@ class SkillViewSet(viewsets.ModelViewSet):
     queryset = Skill.objects.all()
     serializer_class=SkillSerializer
 
-class RegisterViewSet(viewsets.ModelViewSet):
-    
+class RegisterViewSet(viewsets.ModelViewSet): 
     queryset= Register.objects.all()
     serializer_class=RegisterSerializer
 
 class LoginViewSet(viewsets.ModelViewSet):
-
     queryset= Login.objects.all()
     serializer_class=LoginSerializer
 

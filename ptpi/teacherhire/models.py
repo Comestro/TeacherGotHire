@@ -77,7 +77,7 @@ class Question(models.Model):
     subject_id = models.ForeignKey(Subject, on_delete=models.CASCADE)
     question = models.CharField(max_length=200, null=True, blank=True)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
-
+    
     def __str__(self):
         return self.question
     
