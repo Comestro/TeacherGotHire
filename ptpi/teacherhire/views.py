@@ -218,11 +218,9 @@ class LevelViewSet(viewsets.ModelViewSet):
     queryset= Level.objects.all()
     serializer_class=LevelSerializer
 
-class QuestionViewSet(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
-    
-    queryset= Question.objects.all()
+class QuestionViewSet(viewsets.ModelViewSet):    
+    permission_classes = [IsAuthenticated]        
+    queryset= Question.objects.select_related('Level').prefetch_related('option')
     serializer_class=QuestionSerializer
 
 class OptionViewSet(viewsets.ModelViewSet):
