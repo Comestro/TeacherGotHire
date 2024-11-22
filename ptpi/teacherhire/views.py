@@ -210,24 +210,26 @@ class RatingViewSet(viewsets.ModelViewSet):
 
     queryset= Rating.objects.all()
     serializer_class=RatingSerializer
+    
+class SubjectViewSet(viewsets.ModelViewSet):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+    permission_classes = [IsAuthenticated]
 
 class LevelViewSet(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication]
+    queryset = Level.objects.all()
+    serializer_class = LevelSerializer
     permission_classes = [IsAuthenticated]
 
-    queryset= Level.objects.all()
-    serializer_class=LevelSerializer
-
-class QuestionViewSet(viewsets.ModelViewSet):    
-    permission_classes = [IsAuthenticated]        
-    queryset= Question.objects.select_related('Level').prefetch_related('option')
-    serializer_class=QuestionSerializer
+class QuestionViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Question.objects.select_related('subject','level')
+    serializer_class = QuestionSerializer
 
 class OptionViewSet(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
     queryset = Option.objects.all()
-    serializer_class=OptionSerializer
+    serializer_class = OptionSerializer
+    permission_classes = [IsAuthenticated]
     
 class SkillViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]

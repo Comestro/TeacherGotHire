@@ -72,15 +72,15 @@ class Level(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self): 
         return self.name
-    
+
 class Question(models.Model):
-    subject_id = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)  # This will create a column named `subject_id_id`
     question = models.CharField(max_length=200, null=True, blank=True)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return self.question
-    
+   
 class Option(models.Model):
     question = models.ForeignKey(Question, related_name="options", on_delete=models.CASCADE)  # Multiple options for each question
     option = models.CharField(max_length=200, null=True, blank=True)  # The text of the option

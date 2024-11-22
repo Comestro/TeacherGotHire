@@ -42,38 +42,41 @@ class SkillSerializer(serializers.ModelSerializer):
 # Teacher Serializer 
 class TeacherSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True) 
-    # qualification = QualificationSerializer(read_only=True)
-    # subject = SubjectSerializer(many=True, read_only=True)
+    qualification = QualificationSerializer(read_only=True)
+    subject = SubjectSerializer(many=True, read_only=True)
 
     class Meta:
         model = Teacher
         fields = ['id', 'user', 'bio', 'experience_year', 'qualification', 'subject']
 # Rating Serializer
 class RatingSerializer(serializers.ModelSerializer):
-    teacher = TeacherSerializer()  # Nested serializer to show teacher details
+    # teacher = TeacherSerializer()  # Nested serializer to show teacher details
     class Meta:
         model = Rating
         fields = ['id', 'teacher', 'rating', 'comment']
 
 # Level Serializer
 class LevelSerializer(serializers.ModelSerializer):
+    subject_id = SubjectSerializer(read_only=True)
     class Meta:
         model = Level
         fields = "__all__"
 
 
-# Option Serializer
-class OptionSerializer(serializers.ModelSerializer):    
-    class Meta:
-        model = Option
-        fields = "__all__"
-        
 # Question Serializer         
 class QuestionSerializer(serializers.ModelSerializer):
-    option = OptionSerializer(many=True,read_only=True)
+    subject = SubjectSerializer(read_only=True)
     level = LevelSerializer(read_only=True)
     class Meta:
         model = Question
+        fields = "__all__"
+ 
+        
+# Option Serializer
+class OptionSerializer(serializers.ModelSerializer): 
+    question = QuestionSerializer(read_only=True)   
+    class Meta:
+        model = Option
         fields = "__all__"
 
 # Registration Serializer (for User Registration)
