@@ -26,7 +26,7 @@ def dashboard(request):
 
 #teacher
 def manage_teacher(request):
-    response = requests.get("http://127.0.0.1:8000/api/teachers/").json()
+    response = requests.get("http://127.0.0.1:8000/api/admin/teachers/").json()
     return render(request, "admin_panel/manage-teacher.html", {'response':response})
 
 @api_view(['DELETE','PUT'])
@@ -56,7 +56,7 @@ def edit_teacher(request, pk):
 
 #Subject
 def manage_subject(request):
-    response=requests.get("http://127.0.0.1:8000/api/subjects/").json()
+    response=requests.get("http://127.0.0.1:8000/api/admin/subjects/").json()
     return render(request, "admin_panel/manage-subjects.html",{'response':response})
 
 @api_view(['DELETE'])
@@ -67,7 +67,7 @@ def delete_subject(request, pk):
 
 #Qualification
 def manage_qualification(request):
-    response =requests.get("http://127.0.0.1:8000/api/qualifications/").json()
+    response =requests.get("http://127.0.0.1:8000/api/admin/qualifications/").json()
     return render(request, "admin_panel/manage-qualifications.html",{'response':response})
 
 @api_view(['DELETE'])
@@ -79,7 +79,7 @@ def delete_quali(request, pk):
 
 #rating
 def manage_rating(request):
-    response=requests.get('http://127.0.0.1:8000/api/ratings/').json()
+    response=requests.get('http://127.0.0.1:8000/api/admin/ratings/').json()
     return render(request, "admin_panel/manage-rating.html",{'response':response})
 
 @api_view(['DELETE'])
@@ -92,7 +92,7 @@ def delete_rating(request, pk):
 
 def manage_questions(request):
     data = {}
-    data['response']=requests.get('http://127.0.0.1:8000/api/questions/').json()
+    data['response']=requests.get('http://127.0.0.1:8000/api/admin/questions/').json()
     data['options']=requests.get('http://127.0.0.1:8000/api/options/').json()
     return render(request, "admin_panel/manage-question.html",data)
 
@@ -167,35 +167,9 @@ class LoginUser(APIView):
                 'status': 401,
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
-
-            
-
-class SubjectCreateView(APIView):
-    def post(self, request):
-        serializer = SubjectSerializer(data=request.data)
-        if serializer.is_valid():            
-            Subject = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class LevelCreateView(APIView):
-    def post(self, request):
-        serializer = LevelSerializer(data=request.data)
-        if serializer.is_valid():            
-            Level = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class OptionCreateView(APIView):
-    def post(self,request):
-        serializer = OptionSerializer(data=request.data)
-        if serializer.is_valid():
-            Option = serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-    
+           
 class SubjectViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]    
+    permission_classes = [IsAuthenticated]
     queryset= Subject.objects.all()
     serializer_class=SubjectSerializer
 
@@ -214,11 +188,14 @@ class TeacherViewSet(viewsets.ModelViewSet):
 class RatingViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     queryset= Rating.objects.all()
     serializer_class=RatingSerializer
 
-class LevelViewSet(viewsets.ModelViewSet):    
+class LevelViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     queryset= Level.objects.all()
     serializer_class=LevelSerializer
 
@@ -227,7 +204,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset= Question.objects.select_related('Level').prefetch_related('option')
     serializer_class=QuestionSerializer
 
-class OptionViewSet(viewsets.ModelViewSet):    
+class OptionViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = Option.objects.all()
     serializer_class=OptionSerializer
