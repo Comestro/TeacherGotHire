@@ -26,7 +26,7 @@ def dashboard(request):
 
 #teacher
 def manage_teacher(request):
-    response = requests.get("http://127.0.0.1:8000/api/teachers/").json()
+    response = requests.get("http://127.0.0.1:8000/api/admin/teachers/").json()
     return render(request, "admin_panel/manage-teacher.html", {'response':response})
 
 @api_view(['DELETE','PUT'])
@@ -56,7 +56,7 @@ def edit_teacher(request, pk):
 
 #Subject
 def manage_subject(request):
-    response=requests.get("http://127.0.0.1:8000/api/subjects/").json()
+    response=requests.get("http://127.0.0.1:8000/api/admin/subjects/").json()
     return render(request, "admin_panel/manage-subjects.html",{'response':response})
 
 @api_view(['DELETE'])
@@ -67,7 +67,7 @@ def delete_subject(request, pk):
 
 #Qualification
 def manage_qualification(request):
-    response =requests.get("http://127.0.0.1:8000/api/qualifications/").json()
+    response =requests.get("http://127.0.0.1:8000/api/admin/qualifications/").json()
     return render(request, "admin_panel/manage-qualifications.html",{'response':response})
 
 @api_view(['DELETE'])
@@ -79,7 +79,7 @@ def delete_quali(request, pk):
 
 #rating
 def manage_rating(request):
-    response=requests.get('http://127.0.0.1:8000/api/ratings/').json()
+    response=requests.get('http://127.0.0.1:8000/api/admin/ratings/').json()
     return render(request, "admin_panel/manage-rating.html",{'response':response})
 
 @api_view(['DELETE'])
@@ -92,7 +92,7 @@ def delete_rating(request, pk):
 
 def manage_questions(request):
     data = {}
-    data['response']=requests.get('http://127.0.0.1:8000/api/questions/').json()
+    data['response']=requests.get('http://127.0.0.1:8000/api/admin/questions/').json()
     data['options']=requests.get('http://127.0.0.1:8000/api/options/').json()
     return render(request, "admin_panel/manage-question.html",data)
 
