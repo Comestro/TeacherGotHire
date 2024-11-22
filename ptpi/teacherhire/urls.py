@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from teacherhire.views import (
-    SubjectViewSet, QualificationViewSet, TeacherViewSet, RatingViewSet, 
+    QualificationViewSet, TeacherViewSet, RatingViewSet,
     LevelViewSet, QuestionViewSet,OptionCreateView, RegisterUser,LevelCreateView,
     LoginUser,OptionViewSet,SkillViewSet,LoginViewSet,RegisterViewSet,SubjectCreateView
     )
@@ -9,7 +9,7 @@ from rest_framework import routers
 
 
 router = routers.DefaultRouter()
-router.register(r'subjects',SubjectViewSet)
+#router.register(r'subjects',SubjectViewSet)
 router.register(r"qualifications",QualificationViewSet)
 # router.register(r"teachers",TeacherViewSet)
 router.register(r'ratings',RatingViewSet)
