@@ -105,3 +105,13 @@ class Login(models.Model):
     def __str__(self):
         return self.email
     
+    
+class User(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    contact = models.IntegerField()
+    password = models.CharField(max_length=200)
+    city = models.CharField(max_length=200)
+    district = models.CharField(max_length=200)
+    def __str__(self):
+        return self.name

@@ -21,9 +21,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Subject Serializer
 class SubjectSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True) 
     class Meta:
         model = Subject
-        fields = ['id', 'title', 'description', 'marks', 'status', 'backlogs', 'created_at', 'updated_at']
+        fields = ['id','title', 'description', 'marks', 'status', 'backlogs']
 
 # Qualification Serializer
 class QualificationSerializer(serializers.ModelSerializer):
@@ -61,16 +62,24 @@ class LevelSerializer(serializers.ModelSerializer):
         model = Level
         fields = "__all__"
 
-# Question Serializer
-class QuestionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Question
-        fields = "__all__"
 
 # Option Serializer
-class OptionSerializer(serializers.ModelSerializer):
+class OptionSerializer(serializers.ModelSerializer):    
     class Meta:
         model = Option
+        fields = "__all__"
+        
+# class UserSerializer(serializers.ModelSerializer):    
+    # class Meta:
+        # model = User
+        # fields = "__all__"
+        
+# Question Serializer         
+class QuestionSerializer(serializers.ModelSerializer):
+    option = OptionSerializer(many=True,read_only=True)
+    level = LevelSerializer(read_only=True)
+    class Meta:
+        model = Question
         fields = "__all__"
 
 # Registration Serializer (for User Registration)
