@@ -167,7 +167,76 @@ class LoginUser(APIView):
                 'status': 401,
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
-           
+        
+class TeacherCreateView(APIView):
+    def post(self, request):
+        data=request.data.copy()
+        data['user'] = request.user.id
+        serializer = TeacherSerializer(data)
+        if serializer.is_valid():
+            teacher = serializer.save()
+            if 'subject' in request.data:
+                teacher.subject.set(request.data.get('subject'))
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SubjectCreateView(APIView):
+    def post(self, request):
+        serializer = SubjectSerializer(data=request.data)
+        if serializer.is_valid():            
+            Subject = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LevelCreateView(APIView):
+    def post(self, request):
+        serializer = LevelSerializer(data=request.data)
+        if serializer.is_valid():            
+            Level = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class OptionCreateView(APIView):
+    def post(self,request):
+        serializer = OptionSerializer(data=request.data)
+        if serializer.is_valid():
+            Option = serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+    
+class QuestionCreateView(APIView):
+    def post(self, request):
+        serializer = QuestionSerializer(data=request.data)
+        if serializer.is_valid():
+            Option = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class SkillCreateView(APIView):
+    def post(self, request):
+        serializer = SkillSerializer(data=request.data)
+        if serializer.is_valid():
+            Skill = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+    
+class QualificationCreateView(APIView):
+    def post(self, request):
+        serializer = QualificationSerializer(data=request.data)
+        if serializer.is_valid():
+            Qualification = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class RatingCreateView(APIView):
+    def post(self, request):
+        serializer = RatingSerializer(data=request.data)
+        if serializer.is_valid():
+            Rating = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
 class SubjectViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset= Subject.objects.all()
@@ -176,7 +245,7 @@ class SubjectViewSet(viewsets.ModelViewSet):
 class QualificationViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset= Qualification.objects.all()
+    queryset= Qualification.objects.all().select_related('user_id')
     serializer_class=QualificationSerializer
 
 class TeacherViewSet(viewsets.ModelViewSet):    
@@ -184,38 +253,37 @@ class TeacherViewSet(viewsets.ModelViewSet):
     queryset = Teacher.objects.select_related('user', 'qualification').prefetch_related('subject')
     serializer_class = TeacherSerializer
 
-
 class RatingViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    queryset= Rating.objects.all()
+    queryset= Rating.objects.all().select_related('teacher')
     serializer_class=RatingSerializer
 
 class LevelViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    queryset= Level.objects.all()
+    queryset= Level.objects.all().select_related('subject_id')
     serializer_class=LevelSerializer
 
 class QuestionViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     
-    queryset= Question.objects.all()
+    queryset= Question.objects.all().select_related('subject_id')
     serializer_class=QuestionSerializer
 
 class OptionViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = Option.objects.all()
+    queryset = Option.objects.all().select_related('question')
     serializer_class=OptionSerializer
     
 class SkillViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = Skill.objects.all()
+    queryset = Skill.objects.all().select_related('user_id')
     serializer_class=SkillSerializer
 
 class RegisterViewSet(viewsets.ModelViewSet): 
