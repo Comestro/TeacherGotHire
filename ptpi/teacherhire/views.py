@@ -130,8 +130,7 @@ class RegisterUser(APIView):
             'token': access_token,
             'message': 'User registered successfully.'
         }, status=status.HTTP_201_CREATED)
-        
-        
+               
 class LoginUser(APIView):
     def post(self, request):        
         email = request.data.get("email")
@@ -168,14 +167,30 @@ class LoginUser(APIView):
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
            
+# class SubjectCreateView(APIView):
+#     def post(self, request):
+#         serializer = SubjectSerializer(data=request.data)
+#         if serializer.is_valid():            
+#             Subject = serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class SubjectViewSet(viewsets.ModelViewSet):    
+    permission_classes = [IsAuthenticated]
+    queryset =Subject.objects.select_related('user', 'qualification').prefetch_related('subject')
+    serializer_class = SubjectSerializer
 class SubjectCreateView(APIView):
     def post(self, request):
         serializer = SubjectSerializer(data=request.data)
-        if serializer.is_valid():            
-            Subject = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if serializer.is_valid():
+            title = serializer.validated_data.get("title")
+            if Subject.objects.filter(title=title).exists():
+                return Response(
+                    {"error": "Subject with this name already exists."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            subject = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)    
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 class LevelCreateView(APIView):
     def post(self, request):
         serializer = LevelSerializer(data=request.data)

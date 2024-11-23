@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from teacherhire.views import (
-    QualificationViewSet, TeacherViewSet, RatingViewSet,
+    QualificationViewSet, TeacherViewSet, RatingViewSet,SubjectViewSet,
     LevelViewSet, QuestionViewSet,OptionCreateView, RegisterUser,LevelCreateView,
     LoginUser,OptionViewSet,SkillViewSet,LoginViewSet,RegisterViewSet,SubjectCreateView
     )
@@ -25,8 +25,9 @@ urlpatterns = [
     path('auth/',include('rest_framework.urls',namespace='rest_framework')),
     path('register/', RegisterUser.as_view(), name='register'),
     path('login/', LoginUser.as_view(), name='login'),
-    path('admin/teacher/view/', TeacherViewSet.as_view({'get': 'list'}), name='teacher'),
+    path('admin/subject/view/', SubjectViewSet.as_view({'get': 'list'}), name='viewsubject'),
     path('admin/subject/create/', SubjectCreateView.as_view(), name='subject-create'),
+    path('admin/teacher/view/', TeacherViewSet.as_view({'get': 'list'}), name='teacher'),
     path('admin/level/create/', LevelCreateView.as_view(), name='level-create'),
     path('admin/option/create/', OptionCreateView.as_view(), name='option-create'),
 ]
