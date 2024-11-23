@@ -43,8 +43,8 @@ class SkillSerializer(serializers.ModelSerializer):
 # Teacher Serializer 
 class TeacherSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True) 
-    # qualification = QualificationSerializer(read_only=True)
-    # subject = SubjectSerializer(many=True, read_only=True)
+    qualification = QualificationSerializer(read_only=True)
+    subject = SubjectSerializer(many=True, read_only=True)
 
     class Meta:
         model = Teacher
