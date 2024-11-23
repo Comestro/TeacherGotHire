@@ -170,15 +170,34 @@ class LoginUser(APIView):
         
 class TeacherCreateView(APIView):
     def post(self, request):
-        data=request.data.copy()
-        data['user'] = request.user.id
-        serializer = TeacherSerializer(data)
+        if not request.user.is_authenticated:
+            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        if Teacher.objects.filter(user=request.user).exists():
+            return Response({"error": "Teacher profile already exists."}, status=status.HTTP_400_BAD_REQUEST)
+        data = request.data.copy()
+        data['user'] = request.user.id 
+
+        serializer = TeacherSerializer(data=data)
         if serializer.is_valid():
-            teacher = serializer.save()
-            if 'subject' in request.data:
-                teacher.subject.set(request.data.get('subject'))
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                teacher = serializer.save(user=request.user)  
+                if 'subject' in request.data:
+                    teacher.subject.set(request.data.get('subject'))  
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except IntegrityError as e:
+                return Response({"error": "Database integrity error", "details": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
+# class TeacherCreateView(APIView):
+#     def post(self, request):
+#         serializer = TeacherSerializer(data=request.data)
+#         if serializer.is_valid():
+#             teacher = serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SubjectCreateView(APIView):
     def post(self, request):
