@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Subject Serializer
 class SubjectSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True) 
+    # user = UserSerializer(read_only=True) 
     class Meta:
         model = Subject
         fields = ['id','title', 'description', 'marks', 'status', 'backlogs']
@@ -45,10 +45,10 @@ class TeacherSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True) 
     # qualification = QualificationSerializer(read_only=True)
     # subject = SubjectSerializer(many=True, read_only=True)
-
     class Meta:
         model = Teacher
         fields = ['id', 'user', 'bio', 'experience_year', 'qualification', 'subject']
+        read_only_fields = ['user']
 # Rating Serializer
 class RatingSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()  # Nested serializer to show teacher details

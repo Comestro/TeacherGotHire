@@ -38,7 +38,6 @@ def delete_teacher(request, pk):
     #return redirect('manage_teacher')
     return render(request, "admin_panel/manage-teacher.html")
 
-
 def edit_teacher(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
 
@@ -168,18 +167,6 @@ class LoginUser(APIView):
                 'status': 401,
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
-           
-# class SubjectCreateView(APIView):
-#     def post(self, request):
-#         serializer = SubjectSerializer(data=request.data)
-#         if serializer.is_valid():            
-#             Subject = serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-class SubjectViewSet(viewsets.ModelViewSet):    
-    permission_classes = [IsAuthenticated]
-    queryset =Subject.objects.select_related('user', 'qualification').prefetch_related('subject')
-    serializer_class = SubjectSerializer
 class SubjectCreateView(APIView):
     def post(self, request):
         serializer = SubjectSerializer(data=request.data)
@@ -224,7 +211,6 @@ class LevelDeleteView(APIView):
         except Level.DoesNotExist:
             return Response({"error": "Level not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
 
-
 class OptionCreateView(APIView):
     def post(self,request):
         serializer = OptionSerializer(data=request.data)
@@ -243,7 +229,10 @@ class OptionDeleteView(APIView):
             return Response({"error": "Level not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
     
 
-    
+class SubjectViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
     
 class QualificationViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]

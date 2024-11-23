@@ -8,7 +8,6 @@ from teacherhire.views import (
     )
 from rest_framework import routers
 
-
 router = routers.DefaultRouter()
 #router.register(r'subjects',SubjectViewSet)
 router.register(r"qualifications",QualificationViewSet)
@@ -27,7 +26,6 @@ urlpatterns = [
     path('auth/',include('rest_framework.urls',namespace='rest_framework')),
     path('register/', RegisterUser.as_view(), name='register'),
     path('login/', LoginUser.as_view(), name='login'),
-    path('admin/subject/view/', SubjectViewSet.as_view({'get': 'list'}), name='viewsubject'),
     path('admin/subject/create/', SubjectCreateView.as_view(), name='subject-create'),
     path('admin/teacher/view/', TeacherViewSet.as_view({'get': 'list'}), name='teacher'),
     path('admin/subject/<int:pk>/', SubjectDeleteView.as_view(), name='subject-delete'),
