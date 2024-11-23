@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets
 from teacherhire.models import Subject ,Qualification,Teacher,Rating,Level,Question,Register,Login, Option, Skill
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,UserSerializer, OptionSerializer, SkillSerializer
+from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer\
+,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer\
+    , OptionSerializer, SkillSerializer, UserSerializer
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -191,6 +193,19 @@ class SubjectCreateView(APIView):
             subject = serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)    
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class SubjectDeleteView(APIView):
+   def delete(self, request, pk):
+        try:
+            subject = Subject.objects.get(pk=pk)  # Assuming 'owner' links to User
+            
+            # Delete the object
+            subject.delete()
+
+            return Response({"message": "Level deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Subject.DoesNotExist:
+            return Response({"error": "Level not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
+
 class LevelCreateView(APIView):
     def post(self, request):
         serializer = LevelSerializer(data=request.data)
@@ -198,6 +213,17 @@ class LevelCreateView(APIView):
             Level = serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class LevelDeleteView(APIView):
+   def delete(self, request, pk):
+        try:
+            level = Level.objects.get(pk=pk)  # Assuming 'owner' links to User
+            # Delete the object
+            level.delete()
+            return Response({"message": "Level deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Level.DoesNotExist:
+            return Response({"error": "Level not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class OptionCreateView(APIView):
     def post(self,request):
@@ -206,6 +232,18 @@ class OptionCreateView(APIView):
             Option = serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+class OptionDeleteView(APIView):
+   def delete(self, request, pk):
+        try:
+            option = Option.objects.get(pk=pk)  # Assuming 'owner' links to User
+            # Delete the object
+            option.delete()
+            return Response({"message": "Level deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Option.DoesNotExist:
+            return Response({"error": "Level not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
+    
+
+    
     
 class QualificationViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
@@ -257,5 +295,9 @@ class RegisterViewSet(viewsets.ModelViewSet):
 class LoginViewSet(viewsets.ModelViewSet):
     queryset= Login.objects.all()
     serializer_class=LoginSerializer
+
+# class UserViewSet(viewsets.ModelViewSet):
+    # queryset= User.objects.all()
+    # serializer_class= UserSerializer
 
 
