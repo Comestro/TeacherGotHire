@@ -234,8 +234,7 @@ class OptionCreateView(APIView):
 class OptionDeleteView(APIView):
    def delete(self, request, pk):
         try:
-            option = Option.objects.get(pk=pk)  # Assuming 'owner' links to User
-            # Delete the object
+            option = Option.objects.get(pk=pk)
             option.delete()
             return Response({"message": "Option deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
         except Option.DoesNotExist:
@@ -244,9 +243,7 @@ class OptionDeleteView(APIView):
 class SubjectDeleteView(APIView):
    def delete(self, request, pk):
         try:
-            subject = Subject.objects.get(pk=pk)  # Assuming 'owner' links to User
-            
-            # Delete the object
+            subject = Subject.objects.get(pk=pk)
             subject.delete()
 
             return Response({"message": "subject deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
@@ -256,14 +253,19 @@ class SubjectDeleteView(APIView):
 class LevelDeleteView(APIView):
    def delete(self, request, pk):
         try:
-            level = Level.objects.get(pk=pk)  # Assuming 'owner' links to User
-            # Delete the object
+            level = Level.objects.get(pk=pk)
             level.delete()
             return Response({"message": "Level deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
         except Level.DoesNotExist:
             return Response({"error": "Level not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
     
-
+class QuestionCreateView(APIView):
+    def post(self,request):
+        serializer = QuestionSerializer(data=request.data)
+        if serializer.is_valid():
+            question_instance = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
 class QualificationViewSet(viewsets.ModelViewSet):
@@ -275,8 +277,7 @@ class QualificationViewSet(viewsets.ModelViewSet):
 class QualificationDeleteView(APIView):
    def delete(self, request, pk):
         try:
-            qualification = Qualification.objects.get(pk=pk)  # Assuming 'owner' links to User
-            # Delete the object
+            qualification = Qualification.objects.get(pk=pk)
             qualification.delete()
             return Response({"message": "Qualification deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
         except Qualification.DoesNotExist:
@@ -289,8 +290,7 @@ class TeacherViewSet(viewsets.ModelViewSet):
 class TeacherDeleteView(APIView):
    def delete(self, request, pk):
         try:
-            teacher = Teacher.objects.get(pk=pk)  # Assuming 'owner' links to User
-            # Delete the object
+            teacher = Teacher.objects.get(pk=pk) 
             teacher.delete()
             return Response({"message": "Teacher deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
         except Teacher.DoesNotExist:
@@ -322,7 +322,7 @@ class LevelViewSet(viewsets.ModelViewSet):
 
 class QuestionViewSet(viewsets.ModelViewSet):    
     permission_classes = [IsAuthenticated]        
-    queryset= Question.objects.select_related('Level').prefetch_related('option')
+    queryset= Question.objects.select_related('subject','level')
     serializer_class=QuestionSerializer
 
 class QuestionDeleteView(APIView):

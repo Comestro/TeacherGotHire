@@ -11,7 +11,7 @@ from teacherhire.views import (
     LevelViewSet, QuestionViewSet, OptionCreateView, RegisterUser,LevelCreateView,
     LoginUser, OptionViewSet, SkillViewSet, LoginViewSet, RegisterViewSet, SubjectCreateView,
     LevelDeleteView, SubjectDeleteView, TeacherDeleteView, QualificationDeleteView,
-    OptionDeleteView, SkillDeleteView, RatingDeleteView, QuestionDeleteView
+    OptionDeleteView, SkillDeleteView, RatingDeleteView, QuestionDeleteView,QuestionCreateView
     )
 from rest_framework import routers
 
@@ -45,5 +45,6 @@ urlpatterns = [
     path('admin/skill/<int:pk>/', SkillDeleteView.as_view(), name='skill-delete'),
     path('admin/rating/<int:pk>/', RatingDeleteView.as_view(), name='rating-delete'),
     path('admin/question/<int:pk>/', QuestionDeleteView.as_view(), name='question-delete'),
+    path('admin/question/create/', QuestionCreateView.as_view(), name='question-create'),
     path('admin/qualification/<int:pk>/', QualificationDeleteView.as_view(), name='qualification-delete'),
 ]
