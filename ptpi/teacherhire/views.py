@@ -154,13 +154,34 @@ class LoginUser(APIView):
        
         if user.check_password(password):
             refresh = RefreshToken.for_user(user)
-            access_token = str(refresh.access_token)            
+            access_token = str(refresh.access_token)  
+
+            teacher_data = None
+
+            try:
+                teacher = Teacher.objects.get(user=user)
+                teacher_data = {
+                    'id': teacher.id,
+                    'user_id': teacher.user.id,
+                    'bio': teacher.bio,
+                    'experience_year': teacher.experience_year,
+                    'qualification': teacher.qualification,
+                    'subjects': [subject.title for subject in teacher.subject.all()], 
+                }
+            except Teacher.DoesNotExist:
+                teacher_data = None           
 
             return Response({
                 'status': 200,                
                 'message': 'Login successful.',
                 'token': access_token,
                 'refresh': str(refresh),
+                'user': {
+                    'id': user.id,
+                    'email': user.email,
+                    'username': user.username,
+                },
+                'teacher': teacher_data
             }, status=status.HTTP_200_OK)
         else:
             return Response({
@@ -254,6 +275,28 @@ class RatingCreateView(APIView):
             Rating = serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class SubjectDeleteView(APIView):
+   def delete(self, request, pk):
+        try:
+            subject = Subject.objects.get(pk=pk)  # Assuming 'owner' links to User
+            
+            # Delete the object
+            subject.delete()
+
+            return Response({"message": "subject deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Subject.DoesNotExist:
+            return Response({"error": "subject not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
+
+class LevelDeleteView(APIView):
+   def delete(self, request, pk):
+        try:
+            level = Level.objects.get(pk=pk)  # Assuming 'owner' links to User
+            # Delete the object
+            level.delete()
+            return Response({"message": "Level deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Level.DoesNotExist:
+            return Response({"error": "Level not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
     
 
 class SubjectViewSet(viewsets.ModelViewSet):
