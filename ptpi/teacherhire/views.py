@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets
 from teacherhire.models import Subject ,Qualification,Teacher,Rating,Level,Question,Register,Login, Option, Skill
-from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer,UserSerializer, OptionSerializer, SkillSerializer
+from teacherhire.serializers import SubjectSerializer,QualificationSerializer,TeacherSerializer\
+,RatingSerializer, LevelSerializer,QuestionSerializer,RegisterSerializer,LoginSerializer\
+    , OptionSerializer, SkillSerializer, UserSerializer
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -130,8 +132,7 @@ class RegisterUser(APIView):
             'token': access_token,
             'message': 'User registered successfully.'
         }, status=status.HTTP_201_CREATED)
-        
-        
+               
 class LoginUser(APIView):
     def post(self, request):        
         email = request.data.get("email")
@@ -188,46 +189,32 @@ class LoginUser(APIView):
                 'status': 401,
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
-        
-class TeacherCreateView(APIView):
-    def post(self, request):
-        if not request.user.is_authenticated:
-            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        if Teacher.objects.filter(user=request.user).exists():
-            return Response({"error": "Teacher profile already exists."}, status=status.HTTP_400_BAD_REQUEST)
-        data = request.data.copy()
-        data['user'] = request.user.id 
-
-        serializer = TeacherSerializer(data=data)
-        if serializer.is_valid():
-            try:
-                teacher = serializer.save(user=request.user)  
-                if 'subject' in request.data:
-                    teacher.subject.set(request.data.get('subject'))  
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            except IntegrityError as e:
-                return Response({"error": "Database integrity error", "details": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    
-# class TeacherCreateView(APIView):
+           
+# class SubjectCreateView(APIView):
 #     def post(self, request):
-#         serializer = TeacherSerializer(data=request.data)
-#         if serializer.is_valid():
-#             teacher = serializer.save()
+#         serializer = SubjectSerializer(data=request.data)
+#         if serializer.is_valid():            
+#             Subject = serializer.save()
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+class SubjectViewSet(viewsets.ModelViewSet):    
+    permission_classes = [IsAuthenticated]
+    queryset =Subject.objects.select_related('user', 'qualification').prefetch_related('subject')
+    serializer_class = SubjectSerializer
 class SubjectCreateView(APIView):
     def post(self, request):
         serializer = SubjectSerializer(data=request.data)
-        if serializer.is_valid():            
-            Subject = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if serializer.is_valid():
+            title = serializer.validated_data.get("title")
+            if Subject.objects.filter(title=title).exists():
+                return Response(
+                    {"error": "Subject with this name already exists."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            subject = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)    
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
 class LevelCreateView(APIView):
     def post(self, request):
         serializer = LevelSerializer(data=request.data)
@@ -236,6 +223,7 @@ class LevelCreateView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class OptionCreateView(APIView):
     def post(self,request):
         serializer = OptionSerializer(data=request.data)
@@ -243,38 +231,15 @@ class OptionCreateView(APIView):
             Option = serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-    
-class QuestionCreateView(APIView):
-    def post(self, request):
-        serializer = QuestionSerializer(data=request.data)
-        if serializer.is_valid():
-            Option = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-class SkillCreateView(APIView):
-    def post(self, request):
-        serializer = SkillSerializer(data=request.data)
-        if serializer.is_valid():
-            Skill = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
-    
-class QualificationCreateView(APIView):
-    def post(self, request):
-        serializer = QualificationSerializer(data=request.data)
-        if serializer.is_valid():
-            Qualification = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-class RatingCreateView(APIView):
-    def post(self, request):
-        serializer = RatingSerializer(data=request.data)
-        if serializer.is_valid():
-            Rating = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class OptionDeleteView(APIView):
+   def delete(self, request, pk):
+        try:
+            option = Option.objects.get(pk=pk)  # Assuming 'owner' links to User
+            # Delete the object
+            option.delete()
+            return Response({"message": "Option deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Option.DoesNotExist:
+            return Response({"error": "Option not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
     
 class SubjectDeleteView(APIView):
    def delete(self, request, pk):
@@ -299,54 +264,98 @@ class LevelDeleteView(APIView):
             return Response({"error": "Level not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
     
 
-class SubjectViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
-    queryset= Subject.objects.all()
-    serializer_class=SubjectSerializer
-
+    
+    
 class QualificationViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset= Qualification.objects.all().select_related('user_id')
+    queryset= Qualification.objects.all()
     serializer_class=QualificationSerializer
+
+class QualificationDeleteView(APIView):
+   def delete(self, request, pk):
+        try:
+            qualification = Qualification.objects.get(pk=pk)  # Assuming 'owner' links to User
+            # Delete the object
+            qualification.delete()
+            return Response({"message": "Qualification deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Qualification.DoesNotExist:
+            return Response({"error": "Qualification not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
 
 class TeacherViewSet(viewsets.ModelViewSet):    
     permission_classes = [IsAuthenticated]
     queryset = Teacher.objects.select_related('user', 'qualification').prefetch_related('subject')
     serializer_class = TeacherSerializer
+class TeacherDeleteView(APIView):
+   def delete(self, request, pk):
+        try:
+            teacher = Teacher.objects.get(pk=pk)  # Assuming 'owner' links to User
+            # Delete the object
+            teacher.delete()
+            return Response({"message": "Teacher deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Teacher.DoesNotExist:
+            return Response({"error": "Teacher not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class RatingViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    queryset= Rating.objects.all().select_related('teacher')
+    queryset= Rating.objects.all()
     serializer_class=RatingSerializer
+class RatingDeleteView(APIView): 
+   def delete(self, request, pk):
+        try:
+            rating = Rating.objects.get(pk=pk) 
+            # Delete the object
+            rating.delete()
+            return Response({"message": "Rating deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Rating.DoesNotExist:
+            return Response({"error": "Rating not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
 
 class LevelViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    queryset= Level.objects.all().select_related('subject_id')
+    queryset= Level.objects.all()
     serializer_class=LevelSerializer
 
-class QuestionViewSet(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
-    
-    queryset= Question.objects.all().select_related('subject_id')
+class QuestionViewSet(viewsets.ModelViewSet):    
+    permission_classes = [IsAuthenticated]        
+    queryset= Question.objects.select_related('Level').prefetch_related('option')
     serializer_class=QuestionSerializer
 
+class QuestionDeleteView(APIView):
+   def delete(self, request, pk):
+        try:
+            question = Question.objects.get(pk=pk) 
+            # Delete the object
+            question.delete()
+            return Response({"message": "Question deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Question.DoesNotExist:
+            return Response({"error": "Question not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
 class OptionViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = Option.objects.all().select_related('question')
+    queryset = Option.objects.all()
     serializer_class=OptionSerializer
     
 class SkillViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = Skill.objects.all().select_related('user_id')
+    queryset = Skill.objects.all()
     serializer_class=SkillSerializer
+
+class SkillDeleteView(APIView):
+   def delete(self, request, pk):
+        try:
+            skill = Skill.objects.get(pk=pk) 
+            # Delete the object
+            skill.delete()
+            return Response({"message": "Skill deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Skill.DoesNotExist:
+            return Response({"error": "Skill not found or unauthorized"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class RegisterViewSet(viewsets.ModelViewSet): 
     queryset= Register.objects.all()
@@ -355,5 +364,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
 class LoginViewSet(viewsets.ModelViewSet):
     queryset= Login.objects.all()
     serializer_class=LoginSerializer
+
+
 
 
