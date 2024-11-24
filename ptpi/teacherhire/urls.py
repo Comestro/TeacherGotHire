@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from teacherhire.views import (
     SubjectViewSet, QualificationViewSet, TeacherViewSet, RatingViewSet, 
-    LevelViewSet, QuestionViewSet,OptionCreateView, RegisterUser,LevelCreateView, LoginUser,OptionViewSet,SkillViewSet,LoginViewSet,RegisterViewSet,SubjectCreateView, QuestionCreateView, TeacherCreateView, SkillCreateView, QualificationCreateView, RatingCreateView
+    LevelViewSet, QuestionViewSet,OptionCreateView, RegisterUser,LevelCreateView, LoginUser,OptionViewSet,SkillViewSet,LoginViewSet,RegisterViewSet,SubjectCreateView
     , TeacherViewSet, RatingViewSet,SubjectViewSet,
     LevelViewSet, QuestionViewSet,OptionCreateView, RegisterUser,LevelCreateView,
     LoginUser,OptionViewSet,SkillViewSet,LoginViewSet,RegisterViewSet,SubjectCreateView,
