@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Subject Serializer
 class SubjectSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True) 
+    # user = UserSerializer(read_only=True) 
     class Meta:
         model = Subject
         fields = ['id','title', 'description', 'marks', 'status', 'backlogs']
@@ -76,12 +76,17 @@ class OptionSerializer(serializers.ModelSerializer):
         
 # Question Serializer         
 class QuestionSerializer(serializers.ModelSerializer):
-    option = OptionSerializer(many=True,read_only=True)
-    level = LevelSerializer(read_only=True)
     class Meta:
         model = Question
-        fields = "__all__"
-
+        fields = ['subject', 'question', 'level']
+    subject = SubjectSerializer(read_only=True) 
+    level = LevelSerializer(read_only=True)
+    def validate(self, data):
+        if not data.get('subject'):
+            raise serializers.ValidationError("Subject is required.")
+        if not data.get('level'):
+            raise serializers.ValidationError("Level is required.")
+        return data
 # Registration Serializer (for User Registration)
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
