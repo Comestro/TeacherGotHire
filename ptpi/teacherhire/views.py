@@ -190,13 +190,6 @@ class LoginUser(APIView):
                 'message': 'Invalid credentials, please try again.'
             }, status=status.HTTP_401_UNAUTHORIZED)
            
-# class SubjectCreateView(APIView):
-#     def post(self, request):
-#         serializer = SubjectSerializer(data=request.data)
-#         if serializer.is_valid():            
-#             Subject = serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class SubjectViewSet(viewsets.ModelViewSet):    
     permission_classes = [IsAuthenticated]
     queryset =Subject.objects.select_related('user', 'qualification').prefetch_related('subject')
@@ -273,7 +266,14 @@ class QualificationViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset= Qualification.objects.all()
     serializer_class=QualificationSerializer
-
+    
+# class SubjectCreateView(APIView):
+#     def post(self, request):
+#         serializer = SubjectSerializer(data=request.data)
+#         if serializer.is_valid():            
+#             Subject = serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class QualificationDeleteView(APIView):
    def delete(self, request, pk):
         try:

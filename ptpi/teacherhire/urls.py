@@ -47,4 +47,5 @@ urlpatterns = [
     path('admin/question/<int:pk>/', QuestionDeleteView.as_view(), name='question-delete'),
     path('admin/question/create/', QuestionCreateView.as_view(), name='question-create'),
     path('admin/qualification/<int:pk>/', QualificationDeleteView.as_view(), name='qualification-delete'),
+    path('admin/qualification/view/', QualificationViewSet.as_view({'get': 'list'}), name='teacher'),
 ]
